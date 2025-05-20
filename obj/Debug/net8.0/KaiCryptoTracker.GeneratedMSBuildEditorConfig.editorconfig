@@ -18,12 +18,12 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /Users/robert/Desktop/projs/KaiCryptoTracker
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/robert/Desktop/projs/KaiCryptoTracker/Views/Account/dashboard.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9kYXNoYm9hcmQuY3NodG1s
+[/Users/robert/Desktop/projs/KaiCryptoTracker/Views/Account/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9EYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/robert/Desktop/projs/KaiCryptoTracker/Views/Account/login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9sb2dpbi5jc2h0bWw=
+[/Users/robert/Desktop/projs/KaiCryptoTracker/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/robert/Desktop/projs/KaiCryptoTracker/Views/Account/_ViewStart.cshtml]

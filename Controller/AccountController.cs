@@ -1,14 +1,17 @@
 
 using Microsoft.AspNetCore.Mvc;
 using KaiCryptoTracker.Models;
+using KaiCryptoTracker.TokenService;
 
 namespace KaiCryptoTracker.Controllers;
 
 public class AccountController : Controller
 {
    private ILogger<AccountController> _logger;
-   public AccountController(ILogger<AccountController> logger)
+   private readonly ITokenService _tokenService;
+   public AccountController(ILogger<AccountController> logger, ITokenService tokenService)
    {
+      _tokenService = tokenService;
       _logger = logger;
    }
 
@@ -25,19 +28,21 @@ public class AccountController : Controller
    {
       return View();
    }
-    
-   //  [Route("[action]")]
-   // public IActionResult Signup()
-   // {
-   //    return View(); 
-   // }
 
 
-   //  [HttpPost]
-   //  [Route("[action]")]
-   // public IActionResult Signup(string test)
-   // {
-   //    return View(); 
-   // }
+   [Route("[action]")]
+   public IActionResult Dashboard()
+   {
+      return View();
+   }
+
+   [Route("[action]")]
+   [HttpPost]
+   public IActionResult WalletConnect(string name, string address, string chain)
+   {
+      _tokenService.GetTokenBalance(address, chain);
+
+      return Ok();
+   }
 
 }

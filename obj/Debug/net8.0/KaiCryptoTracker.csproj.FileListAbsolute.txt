@@ -13,6 +13,7 @@
 /Users/robert/Desktop/projs/KaiCryptoTracker/obj/Debug/net8.0/KaiCryptoTracker.MvcApplicationPartsAssemblyInfo.cache
 /Users/robert/Desktop/projs/KaiCryptoTracker/obj/Debug/net8.0/KaiCryptoTracker.RazorAssemblyInfo.cache
 /Users/robert/Desktop/projs/KaiCryptoTracker/obj/Debug/net8.0/KaiCryptoTracker.RazorAssemblyInfo.cs
+/Users/robert/Desktop/projs/KaiCryptoTracker/obj/Debug/net8.0/KaiCryptoTracker.sourcelink.json
 /Users/robert/Desktop/projs/KaiCryptoTracker/obj/Debug/net8.0/staticwebassets.build.json
 /Users/robert/Desktop/projs/KaiCryptoTracker/obj/Debug/net8.0/staticwebassets.development.json
 /Users/robert/Desktop/projs/KaiCryptoTracker/obj/Debug/net8.0/staticwebassets/msbuild.KaiCryptoTracker.Microsoft.AspNetCore.StaticWebAssets.props
