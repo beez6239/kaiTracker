@@ -37,10 +37,17 @@ public class AccountController : Controller
    }
 
    [Route("[action]")]
-   [HttpPost]
-   public IActionResult WalletConnect(string name, string address, string chain)
+   public IActionResult AddWallet()
    {
-      _tokenService.GetTokenBalance(address, chain);
+      return View();
+   }
+
+   [Route("[action]")]
+   [HttpPost]
+   public IActionResult AddWallet(AddWalletRequest addWalletRequest)
+   {
+
+      // _tokenService.GetTokenBalanceAsync(address, chain);
 
       return Ok();
    }
