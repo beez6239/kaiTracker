@@ -1,7 +1,7 @@
 namespace KaiCryptoTracker.Models;
 public class Portfolio
 {
-    public Guid UserId { get; set; }
+    public Guid PortfolioId { get; set; }
 
     public decimal TotalValueUsd { get; set; }
 

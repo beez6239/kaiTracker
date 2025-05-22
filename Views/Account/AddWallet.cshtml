@@ -21,10 +21,25 @@
           <label asp-for="WalletName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Wallet Name</label>
           <input type="text" asp-for="WalletName" id="walletname" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Name can be any">
         </div>
+
         <div>
           <label asp-for="WalletAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Wallet Address</label>
           <input asp-for="WalletAddress" id="walletaddress" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="">
         </div>
+
+        <div>
+        <label asp-for="WalletChain" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose Chain</label>
+        <select id="walletchain" asp-for="WalletChain"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          required>
+          <option value="" disabled selected >Select a chain</option>
+          <option value="btc">BTC</option>
+          <option value="eth">ETH</option>
+          <option value="tron">Tron</option>
+          <option value="ltc">LTC</option>
+        </select>
+    </div>
+
         <div class="flex flex-col sm:flex-row gap-3">
           <button type="submit" class="w-full text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -102,3 +117,63 @@
   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 </html>
+
+
+
+
+
+@* <!-- Trigger Button -->
+<div class="text-center">
+  <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+    type="button" data-drawer-target="wallet-info-drawer" data-drawer-show="wallet-info-drawer" data-drawer-placement="right"
+    aria-controls="wallet-info-drawer">
+    Add Wallet
+  </button>
+</div>
+
+<!-- Drawer -->
+<div id="wallet-info-drawer"
+  class="fixed top-0 right-0 z-40 h-screen p-6 overflow-y-auto transition-transform translate-x-full bg-white w-full max-w-md dark:bg-gray-900"
+  tabindex="-1" aria-labelledby="wallet-info-label">
+  
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <h5 id="wallet-info-label" class="text-xl font-semibold text-gray-800 dark:text-white">Wallet Token Details</h5>
+    <button type="button" data-drawer-hide="wallet-info-drawer" aria-controls="wallet-info-drawer"
+      class="text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg text-sm w-8 h-8 flex items-center justify-center">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Token Info Grid -->
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+      <h6 class="text-sm font-medium text-gray-700 dark:text-gray-300">Market Cap</h6>
+      <p class="text-gray-900 dark:text-white">$118.23B</p>
+    </div>
+    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+      <h6 class="text-sm font-medium text-gray-700 dark:text-gray-300">24h Low - High</h6>
+      <p class="text-gray-900 dark:text-white">$6,455.83 - $7,071.42</p>
+    </div>
+    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+      <h6 class="text-sm font-medium text-gray-700 dark:text-gray-300">Available Token</h6>
+      <p class="text-gray-900 dark:text-white">120.23B</p>
+    </div>
+    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+      <h6 class="text-sm font-medium text-gray-700 dark:text-gray-300">Accepted Currencies</h6>
+      <p class="text-gray-900 dark:text-white">BTC, ETH, LTC</p>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="mt-8 flex justify-between">
+    <button class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+      data-drawer-hide="wallet-info-drawer">Cancel</button>
+    <button class="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+      Confirm Add
+    </button>
+  </div>
+</div> *@

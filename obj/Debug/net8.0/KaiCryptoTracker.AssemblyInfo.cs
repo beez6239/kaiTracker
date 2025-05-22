@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap5")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("KaiCryptoTracker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44d057d80543d726bb040b0a98cc4091855ddb7b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aabcfb779dd040703c72f1b9d5463d482c8a65da")]
 [assembly: System.Reflection.AssemblyProductAttribute("KaiCryptoTracker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KaiCryptoTracker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
