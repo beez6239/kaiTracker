@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KaiCryptoTracker.Models;
 
-public class TokenDetails
+public class Token
 {
     [Required]
     public Guid TokenId { get; set; }

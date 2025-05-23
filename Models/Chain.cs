@@ -7,7 +7,8 @@ public class Chain
 
     //FK
     public Guid PortfolioId { get; set; }
-    public List<TokenDetails> TokenDetails { get; set; } = new List<TokenDetails>();
+    
+    public List<Token> TokenDetails { get; set; } = new List<Token>();
     
     public Portfolio Portfolio { get; set; }
 }
