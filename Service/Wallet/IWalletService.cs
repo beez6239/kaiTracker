@@ -10,7 +10,7 @@ public interface IWalletService
     Task<List<Wallet>> GetUserWalletsAsync(string userId);
     Task<Wallet> GetWalletDetailsAsync(Guid userId, string walletAddress, string chain);
 
-    Task<decimal> GetWalletPNLAsync(Guid WalletId);
+    Task<WalletPnlSummary> GetWalletPNLAsync(string walletaddress, string chain);
 
     Task GetWalletStats(string walletaddress, string chain);
 

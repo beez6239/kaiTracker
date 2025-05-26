@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using KaiCryptoTracker.WalletService;
 using KaiCryptoTracker.PortfolioService;
+using KaiCryptoTracker.AllApiCalls;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ var configuration = builder.Configuration;
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
+builder.Services.AddScoped<IApiCalls, ApiCalls>();
 
 
 

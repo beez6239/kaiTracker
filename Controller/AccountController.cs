@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using KaiCryptoTracker.WalletService;
 using KaiCryptoTracker.PortfolioService;
+using KaiCryptoTracker.AllApiCalls;
 
 namespace KaiCryptoTracker.Controllers;
 
@@ -21,6 +22,7 @@ public class AccountController : Controller
    private readonly ITokenService _tokenService;
    private readonly IWalletService _walletservice;
    private readonly IPortfolioService _portfolioservice;
+
    public AccountController(ILogger<AccountController> logger, ITokenService tokenService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IWalletService walletservice, IPortfolioService portfolioservice)
    {
       _tokenService = tokenService;
@@ -29,6 +31,7 @@ public class AccountController : Controller
       _dbcontext = dbcontext;
       _walletservice = walletservice;
       _portfolioservice = portfolioservice;
+
       _logger = logger;
 
    }
@@ -77,7 +80,7 @@ public class AccountController : Controller
 
          if (porfolioresult == null)
          {
-            porfolioresult = await _portfolioservice.AddPortfolioAsync(user.Id, null);           
+            porfolioresult = await _portfolioservice.AddPortfolioAsync(user.Id, null);
          }
 
          return View(porfolioresult);
@@ -105,11 +108,21 @@ public class AccountController : Controller
          // if (user != null)
          // {
 
-            // await _walletservice.AddWalletAsync(user.Id,addWalletRequest.WalletAddress, addWalletRequest.WalletChain, addWalletRequest.WalletName);    
+         // await _walletservice.AddWalletAsync(user.Id,addWalletRequest.WalletAddress, addWalletRequest.WalletChain, addWalletRequest.WalletName);    
          // }
       }
 
       return RedirectToAction("Dashboard", "Account");
+   }
+
+
+   [Route("[action]")]
+    [HttpPost]
+   public async Task<IActionResult> TestEndpoint(string wallet, string chain)
+   {
+      await _walletservice.GetWalletPNLAsync(wallet, chain);
+
+      return Ok();
    }
    
 

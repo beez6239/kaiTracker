@@ -3,6 +3,7 @@ using KaiCryptoTracker.Models;
 using Newtonsoft.Json;
 
 using KaiCryptoTracker.ApiModels;
+using KaiCryptoTracker.AllApiCalls;
 
 namespace KaiCryptoTracker.WalletService;
 
@@ -12,11 +13,13 @@ public class WalletService : IWalletService
     private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory _httpclientFactory;
     private readonly ILogger<WalletService> _logger;
-    public WalletService(ApplicationDbContext dbcontext, ILogger<WalletService> logger, IConfiguration configuration, IHttpClientFactory httpclientFactory)
+    private readonly IApiCalls _apicalls; 
+    public WalletService(ApplicationDbContext dbcontext, ILogger<WalletService> logger, IConfiguration configuration, IHttpClientFactory httpclientFactory , IApiCalls apicalls)
     {
         _dbcontext = dbcontext;
         _configuration = configuration;
         _httpclientFactory = httpclientFactory;
+        _apicalls = apicalls;
         _logger = logger;
     }
     public async Task AddWalletAsync(Guid userId, string walletaddress, string chain, string Walletname)
@@ -66,13 +69,31 @@ public class WalletService : IWalletService
             _logger.LogError(ex.Message);
         }
 
-
         return false;
     }
 
-    public Task<decimal> GetWalletPNLAsync(Guid WalletId)
+    public async Task<WalletPnlSummary> GetWalletPNLAsync(string walletaddress, string chain)
     {
-        throw new NotImplementedException();
+        WalletPnlSummary walletpnlsummary = null;
+        try
+        {
+            string url = $"{_configuration.GetSection("Moralis")["walleturl"]}{walletaddress}/profitability/summary?chain={chain}";
+
+            var json = await _apicalls.Moralis(url);
+            walletpnlsummary = JsonConvert.DeserializeObject<WalletPnlSummary>(json);
+            if (walletpnlsummary != null)
+            {
+                return walletpnlsummary;
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+        }
+        return walletpnlsummary;
+
     }
 
     public async Task<Activechains?> GetWalletActiveChains(string walletaddress)
@@ -81,35 +102,15 @@ public class WalletService : IWalletService
         
         try
         {
-            string? url = _configuration.GetSection("Moralis")["walleturl"];
+            string url = $"{_configuration.GetSection("Moralis")["walleturl"]}{walletaddress}/chains";
 
-            string fullurl = $"{url}{walletaddress}/chains";
+            var json = await _apicalls.Moralis(url);
 
-            var client = _httpclientFactory.CreateClient();
-
-            var request = new HttpRequestMessage(HttpMethod.Get, fullurl);
-            request.Headers.Accept.ParseAdd("application/json");
-
-            //get api key 
-            string? apikey = _configuration.GetSection("Moralis")["key"];
-
-            if (apikey != null) request.Headers.Add("X-API-Key", apikey);
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var streamcontent = response.Content.ReadAsStream();
-                var reader = new StreamReader(streamcontent);
-                string jsondata = await reader.ReadToEndAsync();
-
-                activechains = JsonConvert.DeserializeObject<Activechains>(jsondata);
+              activechains = JsonConvert.DeserializeObject<Activechains>(json);
                 if (activechains != null)
                 {
-                    return activechains;
+                  return activechains;
                 }
-
-            }
 
         }
         catch (Exception ex)
@@ -125,28 +126,11 @@ public class WalletService : IWalletService
     { 
          try
         {
-            string? url = _configuration.GetSection("Moralis")["Url"];
+            // string? url = _configuration.GetSection("Moralis")["Url"];
 
-            string fullurl = $"{url}{walletaddress}/stats?chain={chain}";
+            string url = $"{_configuration.GetSection("Moralis")["Url"]}{walletaddress}/stats?chain={chain}";
 
-            var client = _httpclientFactory.CreateClient();
-
-            var request = new HttpRequestMessage(HttpMethod.Get, fullurl);
-            request.Headers.Accept.ParseAdd("application/json");
-
-            //get api key 
-            string? apikey = _configuration.GetSection("Moralis")["key"];
-
-            if (apikey != null) request.Headers.Add("X-API-Key", apikey);
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var streamcontent = response.Content.ReadAsStream();
-                var reader = new StreamReader(streamcontent);
-                string jsondata = await reader.ReadToEndAsync();
-            }
+            var json = await _apicalls.Moralis(url);
 
         }
         catch (Exception ex)
