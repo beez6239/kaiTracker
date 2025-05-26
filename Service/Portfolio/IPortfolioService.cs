@@ -1,10 +1,15 @@
 using KaiCryptoTracker.Models; 
 
-public interface IPortfolio
+namespace KaiCryptoTracker.PortfolioService;
+public interface IPortfolioService
 {
-    Task<Portfolio> GetPortfolioOverviewAsync(string userId);
+    Task<Portfolio> GetPortfolioOverviewAsync(Guid userId);
 
-    Task<decimal> GetTotalValueAsync(string userId);
-    
-    Task<List<Chain>> GetHoldingsPerChainAsync(string userId);
+    Task<Portfolio> AddPortfolioAsync(Guid userId, string? portfolioname);
+
+    Task DeletePortfolioAsync(Guid userId, Guid PortfolioId);
+
+    Task<decimal> GetTotalValueAsync(Guid userId);
+
+    Task<List<Chain>> GetHoldingsPerChainAsync(Guid userId);
 }

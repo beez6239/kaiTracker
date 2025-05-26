@@ -6,12 +6,10 @@ namespace KaiCryptoTracker.Models;
 public class AddWalletRequest
 {
     
-     [Required]
+    [Required(ErrorMessage = "Wallet name can't be emtpy")]
     public string? WalletName { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "Wallet address can't be empty")]
     public string WalletAddress { get; set; } = string.Empty;
 
-    [Required]
-    public string WalletChain { get; set; } = string.Empty;
 }

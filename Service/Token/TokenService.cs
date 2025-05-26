@@ -9,7 +9,7 @@ public class TokenService : ITokenService
 
     private readonly ILogger<TokenService> _logger;
 
-    private string url = "https://deep-index.moralis.io/api/v2.2";
+    // private string url = "";
 
     public TokenService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<TokenService> logger)
     {
@@ -25,11 +25,13 @@ public class TokenService : ITokenService
 
     public async Task GetTokenBalanceAsync(string walletaddress, string chain)
     {
-
-        string fullurl = $"{url}/{walletaddress}/erc20?chain={chain}";
-
+    
         try
         {
+
+            string? url = _configuration.GetSection("Moralis")["Url"];
+
+            string fullurl = $"{url}/{walletaddress}/erc20?chain={chain}";
             var client = _httpclientFactory.CreateClient();
 
             var request = new HttpRequestMessage(HttpMethod.Get, fullurl);
@@ -59,16 +61,6 @@ public class TokenService : ITokenService
 
 
     public Task GetTokenMetaData(string walletaddress, string chain)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void GetWalletPNL()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<decimal> GetWalletPNLAsync()
     {
         throw new NotImplementedException();
     }

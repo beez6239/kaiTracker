@@ -4,6 +4,7 @@ using KaiCryptoTracker.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KaiCryptoTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526102415_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,6 +222,9 @@ namespace KaiCryptoTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(38, 18)");
+
                     b.Property<Guid>("ChainId")
                         .HasColumnType("uniqueidentifier");
 
@@ -233,8 +239,8 @@ namespace KaiCryptoTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("VerifiedContract")
-                        .HasColumnType("decimal(38, 18)");
+                    b.Property<bool>("Verified_Contract")
+                        .HasColumnType("bit");
 
                     b.HasKey("TokenMetadataId");
 
@@ -400,7 +406,7 @@ namespace KaiCryptoTracker.Migrations
             modelBuilder.Entity("KaiCryptoTracker.Models.TokenHolding", b =>
                 {
                     b.HasOne("KaiCryptoTracker.Models.TokenMetadata", "TokenMetadata")
-                        .WithMany("TokenHoldings")
+                        .WithMany("tokenHoldings")
                         .HasForeignKey("TokenMetadataId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -518,7 +524,7 @@ namespace KaiCryptoTracker.Migrations
 
             modelBuilder.Entity("KaiCryptoTracker.Models.TokenMetadata", b =>
                 {
-                    b.Navigation("TokenHoldings");
+                    b.Navigation("tokenHoldings");
                 });
 
             modelBuilder.Entity("KaiCryptoTracker.Models.Wallet", b =>

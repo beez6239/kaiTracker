@@ -3,9 +3,10 @@ namespace KaiCryptoTracker.Models;
 
 public class LoginDto
 {
-    [Required]
+     [Required(ErrorMessage = "Username/Email can't be empty")]
      public string Email { get; set; } = string.Empty; 
-     [Required]
+
+     [Required(ErrorMessage = "Password Required")]
      public string Password {get;set;} = string.Empty; 
 
   

@@ -4,15 +4,19 @@ using KaiCryptoTracker.DbContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using KaiCryptoTracker.WalletService;
+using KaiCryptoTracker.PortfolioService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-var configuration = builder.Configuration; 
+var configuration = builder.Configuration;
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IWalletService, WalletService>();
+builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 
 
 
@@ -36,9 +40,11 @@ var app = builder.Build();
 
 
 //create db if it does not exist 
+
 using (var scoped = app.Services.CreateScope())
 {
     var dbcontext = scoped.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
     await dbcontext.Database.MigrateAsync();
 
 }
