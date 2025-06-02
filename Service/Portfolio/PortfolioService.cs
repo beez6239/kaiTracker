@@ -1,15 +1,19 @@
 using KaiCryptoTracker.DbContext;
+using Microsoft.EntityFrameworkCore;
 using KaiCryptoTracker.Models;
 using KaiCryptoTracker.PortfolioService;
+using KaiCryptoTracker.AllApiCalls;
 
 public class PortfolioService : IPortfolioService
 {
     private readonly ApplicationDbContext _dbcontext;
+    private readonly IApiCalls _api; 
     private readonly ILogger<PortfolioService> _logger;
-    public PortfolioService(ApplicationDbContext dbcontext, ILogger<PortfolioService> logger)
+    public PortfolioService(ApplicationDbContext dbcontext, ILogger<PortfolioService> logger,  IApiCalls api)
     {
         _dbcontext = dbcontext;
         _logger = logger;
+        _api = api;
     }
     public async Task<Portfolio> AddPortfolioAsync(Guid userId, string? portfolioname)
     {
@@ -48,8 +52,29 @@ public class PortfolioService : IPortfolioService
         throw new NotImplementedException();
     }
 
-    public Task<decimal> GetTotalValueAsync(Guid userId)
-    {
-        throw new NotImplementedException();
-    }
+    // public async Task<decimal> GetTotalValueAsync(Guid userId)
+    // {
+    //      var user = await _dbcontext.Users
+    //        .Include(u => u.Wallets)
+    //         .ThenInclude(w => w.tokenHoldings)
+    //         .ThenInclude(th => th.TokenMetadata)
+    //        .FirstOrDefaultAsync(u => u.Id == userId);
+
+    // if (user == null)
+    //     throw new ArgumentException("User not found");
+
+    // decimal totalValue = 0;
+
+    // foreach (var wallet in user.Wallets)
+    // {
+    //     foreach (var holding in wallet.tokenHoldings)
+    //     {
+            
+    //         var priceUsd = await _api.GetPriceCoinGecko(holding.TokenMetadata.Address, holding.TokenMetadata.Chain.ChainName);
+    //         totalValue += holding.Balance * priceUsd;
+    //     }
+    // }
+
+    // return totalValue;
+    // }
 }

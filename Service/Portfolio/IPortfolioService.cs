@@ -9,7 +9,7 @@ public interface IPortfolioService
 
     Task DeletePortfolioAsync(Guid userId, Guid PortfolioId);
 
-    Task<decimal> GetTotalValueAsync(Guid userId);
+    // Task<decimal> GetTotalValueAsync(Guid userId);
 
     Task<List<Chain>> GetHoldingsPerChainAsync(Guid userId);
 }

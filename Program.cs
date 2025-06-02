@@ -43,13 +43,13 @@ var app = builder.Build();
 
 //create db if it does not exist 
 
-using (var scoped = app.Services.CreateScope())
-{
-    var dbcontext = scoped.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+// using (var scoped = app.Services.CreateScope())
+// {
+//     var dbcontext = scoped.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    await dbcontext.Database.MigrateAsync();
+//     await dbcontext.Database.MigrateAsync();
 
-}
+// }
 if (app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();

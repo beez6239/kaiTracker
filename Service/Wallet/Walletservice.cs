@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 using KaiCryptoTracker.ApiModels;
 using KaiCryptoTracker.AllApiCalls;
+using Microsoft.EntityFrameworkCore;
 
 namespace KaiCryptoTracker.WalletService;
 
@@ -42,9 +43,9 @@ public class WalletService : IWalletService
         }
     }
 
-    public Task<List<Wallet>> GetUserWalletsAsync(string userId)
+    public async Task<List<Wallet>> GetUserWalletsAsync(Guid userId)
     {
-        throw new NotImplementedException();
+        return await _dbcontext.Wallets.Where(w => w.UserId == userId).ToListAsync();       
     }
 
     public Task<Wallet> GetWalletDetailsAsync(Guid userId, string walletAddress, string chain)
@@ -122,20 +123,26 @@ public class WalletService : IWalletService
         
     }
 
-    public async Task GetWalletStats(string walletaddress, string chain)
-    { 
-         try
+    public async Task<TokenBalanceByWallet> GetTokenBalanceByWallet(string walletaddress, string chain)
+    {
+        TokenBalanceByWallet tokenbalancebywallet = null;
+        try
         {
-            // string? url = _configuration.GetSection("Moralis")["Url"];
-
-            string url = $"{_configuration.GetSection("Moralis")["Url"]}{walletaddress}/stats?chain={chain}";
+            string url = $"{_configuration.GetSection("Moralis")["Url"]}{walletaddress}/tokens?chain={chain}";
 
             var json = await _apicalls.Moralis(url);
+            tokenbalancebywallet = JsonConvert.DeserializeObject<TokenBalanceByWallet>(json);
+            if (tokenbalancebywallet != null)
+            {
+                return tokenbalancebywallet;
+            }
 
         }
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);
         }
+
+        return tokenbalancebywallet;
     }
 }

@@ -1,4 +1,4 @@
-@model Portfolio
+@* @model Portfolio *@
 
 <section class="mt-15 md:mt-24 mb-5  ps-2 md:ps-20 pe-2 md:pe-4 w-lvw ">
     <div class="grid grid-cols-10 gap-4">
@@ -6,7 +6,7 @@
         <div class="col-span-10 ">
             <div
                 class="flex flex-wrap gap-4 justify-center sm:justify-between items-center p-4 shadow-sm dark:shadow-md rounded-lg">
-                <h4 class="text-2xl  font-bold text-white">@Model.PortfolioName</h4>
+                @* <h4 class="text-2xl  font-bold text-white">@Model.PortfolioName</h4> *@
                 <a href="@Url.Action("AddWallet","Account")"
                     class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5   dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 me-2 mb-2 w-full md:w-auto text-center "
                     title="go to P2P page">Add Wallet </a>
@@ -56,7 +56,7 @@
                         <div
                             class="grid grid-cols-4 content-center items-center md:flex-row justify-center align-center">
                             <div class="md:col-span-2 col-span-4 justify  ">
-                                <div class="grid grid-cols-2 sm:grid-cols-1 gap-4">
+                                @* <div class="grid grid-cols-2 sm:grid-cols-1 gap-4">
                                     <div>
                                         <h6>Total Tokens</h6>
                                         <span class="text-lg sm:text-3xl font-bold">@Model.TotalValueUsd</span>
@@ -77,7 +77,7 @@
                                         <h6>Total Wallets</h6>
                                         <span class="text-lg sm:text-xl font-bold">@Model.TotalWallets</span>
                                     </div>
-                                </div>
+                                </div> *@
                             </div>
                         </div>
                         <!-- card-end -->
@@ -187,628 +187,284 @@
 
             </div>
         </div>
-        <!-- form -->
-        <div class="col-span-10 lg:col-span-4 ">
+         <div class="col-span-10 lg:col-span-4 " id="chart">
+            <div id="coins-content" class="">
+           
+    <!-- TradingView Widget Embed with Fullscreen Option -->
+    <div class="w-full flex flex-col items-center py-6 relative">
+         
+        <div id="tv-chart-container" class="w-full" style="max-width: 900px;">
+            <iframe id="tv-iframe"
+                src="https://www.tradingview.com/widgetembed/?symbol=BINANCE:ETHUSDT&interval=1D&theme=dark"
+                width="100%" height="400" frameborder="0" allowtransparency="true" scrolling="no"
+                style="border-radius: 8px;"></iframe>
+            <button id="tv-fullscreen-btn"
+            class="absolute right-4 top-4 z-10 bg-gray-800 text-white px-3 py-1 rounded hover:bg-gray-700 text-xs"
+            onclick="toggleTradingViewFullscreen(event)">
+            Full Screen
+        </button>
+        </div>
+    </div>
+</div>
+<script>
+function toggleTradingViewFullscreen(e) {
+    e.preventDefault();
+    const container = document.getElementById('tv-chart-container');
+    const iframe = document.getElementById('tv-iframe');
+    const btn = document.getElementById('tv-fullscreen-btn');
+    if (!document.fullscreenElement) {
+        container.requestFullscreen().then(() => {
+            iframe.style.height = "100vh";
+            btn.textContent = "Exit Full Screen";
+        });
+    } else {
+        document.exitFullscreen().then(() => {
+            iframe.style.height = "400px";
+            btn.textContent = "Full Screen";
+        });
+    }
+}
+// Handle exit from fullscreen via ESC or browser controls
+document.addEventListener('fullscreenchange', function () {
+    const iframe = document.getElementById('tv-iframe');
+    const btn = document.getElementById('tv-fullscreen-btn');
+    if (!document.fullscreenElement) {
+        iframe.style.height = "400px";
+        btn.textContent = "Full Screen";
+    }
+});
+</script>
+         </div>
+
+        
+        <!-- Alert form -->
+        <div class="col-span-10 lg:col-span-4 hidden" id="alert">
             <form class="grid grid-cols-1 gap-4 border rounded-lg border-gray-200 dark:border-gray-700 p-4">
                 <div class="flex justify-between items-center border-b pb-4 border-gray-200 dark:border-gray-700">
-                    <h4 class="text-2xl   font-bold">Withdraw Crypto</h4>
+                    <h4 class="text-2xl font-bold">Set Price Alert</h4>
                 </div>
                 <div>
-                    <label for="location-search"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select coin</label>
-                    <div class="flex">
-                        <button id="dropdown-button-2" data-dropdown-toggle="dropdown-search-city"
-                            class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                            type="button">
-                            <svg aria-hidden="true" class="h-3 me-2" viewBox="0 0 15 12" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="0.5" width="14" height="12" rx="2" fill="white"></rect>
-                                <mask id="mask0_12694_49953" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                    y="0" width="15" height="12">
-                                    <rect x="0.5" width="14" height="12" rx="2" fill="white"></rect>
-                                </mask>
-                                <g mask="url(#mask0_12694_49953)">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M14.5 0H0.5V0.8H14.5V0ZM14.5 1.6H0.5V2.4H14.5V1.6ZM0.5 3.2H14.5V4H0.5V3.2ZM14.5 4.8H0.5V5.6H14.5V4.8ZM0.5 6.4H14.5V7.2H0.5V6.4ZM14.5 8H0.5V8.8H14.5V8ZM0.5 9.6H14.5V10.4H0.5V9.6ZM14.5 11.2H0.5V12H14.5V11.2Z"
-                                        fill="#D02F44"></path>
-                                    <rect x="0.5" width="6" height="5.6" fill="#46467F"></rect>
-                                    <g filter="url(#filter0_d_12694_49953)">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M1.83317 1.20005C1.83317 1.42096 1.68393 1.60005 1.49984 1.60005C1.31574 1.60005 1.1665 1.42096 1.1665 1.20005C1.1665 0.979135 1.31574 0.800049 1.49984 0.800049C1.68393 0.800049 1.83317 0.979135 1.83317 1.20005ZM3.1665 1.20005C3.1665 1.42096 3.01727 1.60005 2.83317 1.60005C2.64908 1.60005 2.49984 1.42096 2.49984 1.20005C2.49984 0.979135 2.64908 0.800049 2.83317 0.800049C3.01727 0.800049 3.1665 0.979135 3.1665 1.20005ZM4.1665 1.60005C4.3506 1.60005 4.49984 1.42096 4.49984 1.20005C4.49984 0.979135 4.3506 0.800049 4.1665 0.800049C3.98241 0.800049 3.83317 0.979135 3.83317 1.20005C3.83317 1.42096 3.98241 1.60005 4.1665 1.60005ZM5.83317 1.20005C5.83317 1.42096 5.68393 1.60005 5.49984 1.60005C5.31574 1.60005 5.1665 1.42096 5.1665 1.20005C5.1665 0.979135 5.31574 0.800049 5.49984 0.800049C5.68393 0.800049 5.83317 0.979135 5.83317 1.20005ZM2.1665 2.40005C2.3506 2.40005 2.49984 2.22096 2.49984 2.00005C2.49984 1.77913 2.3506 1.60005 2.1665 1.60005C1.98241 1.60005 1.83317 1.77913 1.83317 2.00005C1.83317 2.22096 1.98241 2.40005 2.1665 2.40005ZM3.83317 2.00005C3.83317 2.22096 3.68393 2.40005 3.49984 2.40005C3.31574 2.40005 3.1665 2.22096 3.1665 2.00005C3.1665 1.77913 3.31574 1.60005 3.49984 1.60005C3.68393 1.60005 3.83317 1.77913 3.83317 2.00005ZM4.83317 2.40005C5.01726 2.40005 5.1665 2.22096 5.1665 2.00005C5.1665 1.77913 5.01726 1.60005 4.83317 1.60005C4.64908 1.60005 4.49984 1.77913 4.49984 2.00005C4.49984 2.22096 4.64908 2.40005 4.83317 2.40005ZM5.83317 2.80005C5.83317 3.02096 5.68393 3.20005 5.49984 3.20005C5.31574 3.20005 5.1665 3.02096 5.1665 2.80005C5.1665 2.57914 5.31574 2.40005 5.49984 2.40005C5.68393 2.40005 5.83317 2.57914 5.83317 2.80005ZM4.1665 3.20005C4.3506 3.20005 4.49984 3.02096 4.49984 2.80005C4.49984 2.57914 4.3506 2.40005 4.1665 2.40005C3.98241 2.40005 3.83317 2.57914 3.83317 2.80005C3.83317 3.02096 3.98241 3.20005 4.1665 3.20005ZM3.1665 2.80005C3.1665 3.02096 3.01727 3.20005 2.83317 3.20005C2.64908 3.20005 2.49984 3.02096 2.49984 2.80005C2.49984 2.57914 2.64908 2.40005 2.83317 2.40005C3.01727 2.40005 3.1665 2.57914 3.1665 2.80005ZM1.49984 3.20005C1.68393 3.20005 1.83317 3.02096 1.83317 2.80005C1.83317 2.57914 1.68393 2.40005 1.49984 2.40005C1.31574 2.40005 1.1665 2.57914 1.1665 2.80005C1.1665 3.02096 1.31574 3.20005 1.49984 3.20005ZM2.49984 3.60005C2.49984 3.82096 2.3506 4.00005 2.1665 4.00005C1.98241 4.00005 1.83317 3.82096 1.83317 3.60005C1.83317 3.37913 1.98241 3.20005 2.1665 3.20005C2.3506 3.20005 2.49984 3.37913 2.49984 3.60005ZM3.49984 4.00005C3.68393 4.00005 3.83317 3.82096 3.83317 3.60005C3.83317 3.37913 3.68393 3.20005 3.49984 3.20005C3.31574 3.20005 3.1665 3.37913 3.1665 3.60005C3.1665 3.82096 3.31574 4.00005 3.49984 4.00005ZM5.1665 3.60005C5.1665 3.82096 5.01726 4.00005 4.83317 4.00005C4.64908 4.00005 4.49984 3.82096 4.49984 3.60005C4.49984 3.37913 4.64908 3.20005 4.83317 3.20005C5.01726 3.20005 5.1665 3.37913 5.1665 3.60005ZM5.49984 4.80005C5.68393 4.80005 5.83317 4.62096 5.83317 4.40005C5.83317 4.17913 5.68393 4.00005 5.49984 4.00005C5.31574 4.00005 5.1665 4.17913 5.1665 4.40005C5.1665 4.62096 5.31574 4.80005 5.49984 4.80005ZM4.49984 4.40005C4.49984 4.62096 4.3506 4.80005 4.1665 4.80005C3.98241 4.80005 3.83317 4.62096 3.83317 4.40005C3.83317 4.17913 3.98241 4.00005 4.1665 4.00005C4.3506 4.00005 4.49984 4.17913 4.49984 4.40005ZM2.83317 4.80005C3.01727 4.80005 3.1665 4.62096 3.1665 4.40005C3.1665 4.17913 3.01727 4.00005 2.83317 4.00005C2.64908 4.00005 2.49984 4.17913 2.49984 4.40005C2.49984 4.62096 2.64908 4.80005 2.83317 4.80005ZM1.83317 4.40005C1.83317 4.62096 1.68393 4.80005 1.49984 4.80005C1.31574 4.80005 1.1665 4.62096 1.1665 4.40005C1.1665 4.17913 1.31574 4.00005 1.49984 4.00005C1.68393 4.00005 1.83317 4.17913 1.83317 4.40005Z"
-                                            fill="url(#paint0_linear_12694_49953)"></path>
-                                    </g>
-                                </g>
-                                <defs>
-                                    <filter id="filter0_d_12694_49953" x="1.1665" y="0.800049" width="4.6665" height="5"
-                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
-                                        <feColorMatrix in="SourceAlpha" type="matrix"
-                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha">
-                                        </feColorMatrix>
-                                        <feOffset dy="1"></feOffset>
-                                        <feColorMatrix type="matrix"
-                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix>
-                                        <feBlend mode="normal" in2="BackgroundImageFix"
-                                            result="effect1_dropShadow_12694_49953"></feBlend>
-                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_12694_49953"
-                                            result="shape"></feBlend>
-                                    </filter>
-                                    <linearGradient id="paint0_linear_12694_49953" x1="1.1665" y1="0.800049" x2="1.1665"
-                                        y2="4.80005" gradientUnits="userSpaceOnUse">
-                                        <stop stop-color="white"></stop>
-                                        <stop offset="1" stop-color="#F0F0F0"></stop>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            USDT
-                            <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 1 4 4 4-4"></path>
-                            </svg>
-                        </button>
-                        <div id="dropdown-search-city"
-                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-                            style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(81.5px, 562px, 0px);"
-                            data-popper-placement="bottom">
-                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdown-button-2">
-                                <li>
-                                    <div
-                                        class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        <div class="inline-flex items-center">
-                                            <svg aria-hidden="true" class="h-3.5 w-3.5 rounded-full me-2"
-                                                xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-us"
-                                                viewBox="0 0 512 512">
-                                                <g fill-rule="evenodd">
-                                                    <g stroke-width="1pt">
-                                                        <path fill="#bd3d44"
-                                                            d="M0 0h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0z"
-                                                            transform="scale(3.9385)"></path>
-                                                        <path fill="#fff"
-                                                            d="M0 10h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0z"
-                                                            transform="scale(3.9385)"></path>
-                                                    </g>
-                                                    <path fill="#192f5d" d="M0 0h98.8v70H0z" transform="scale(3.9385)">
-                                                    </path>
-                                                    <path fill="#fff"
-                                                        d="M8.2 3l1 2.8H12L9.7 7.5l.9 2.7-2.4-1.7L6 10.2l.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7L74 8.5l-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 7.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 24.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 21.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 38.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 35.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 52.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 49.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 66.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 63.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9z"
-                                                        transform="scale(3.9385)"></path>
-                                                </g>
-                                            </svg>
-                                            United States
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        <div class="inline-flex items-center">
-                                            <svg aria-hidden="true" class="h-3.5 w-3.5 rounded-full me-2"
-                                                xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-de"
-                                                viewBox="0 0 512 512">
-                                                <path fill="#ffce00" d="M0 341.3h512V512H0z"></path>
-                                                <path d="M0 0h512v170.7H0z"></path>
-                                                <path fill="#d00" d="M0 170.7h512v170.6H0z"></path>
-                                            </svg>
-                                            Germany
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        <div class="inline-flex items-center">
-                                            <svg aria-hidden="true" class="h-3.5 w-3.5 rounded-full me-2"
-                                                xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-it"
-                                                viewBox="0 0 512 512">
-                                                <g fill-rule="evenodd" stroke-width="1pt">
-                                                    <path fill="#fff" d="M0 0h512v512H0z"></path>
-                                                    <path fill="#009246" d="M0 0h170.7v512H0z"></path>
-                                                    <path fill="#ce2b37" d="M341.3 0H512v512H341.3z"></path>
-                                                </g>
-                                            </svg>
-                                            Italy
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div
-                                        class="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        <div class="inline-flex items-center">
-                                            <svg aria-hidden="true" class="h-3.5 w-3.5 rounded-full me-2"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" id="flag-icon-css-cn"
-                                                viewBox="0 0 512 512">
-                                                <defs>
-                                                    <path fill="#ffde00" d="M1-.3L-.7.8 0-1 .6.8-1-.3z"></path>
-                                                </defs>
-                                                <path fill="#de2910" d="M0 0h512v512H0z"></path>
-                                                <use width="30" height="20" transform="matrix(76.8 0 0 76.8 128 128)"
-                                                    xlink:href="#a"></use>
-                                                <use width="30" height="20"
-                                                    transform="rotate(-121 142.6 -47) scale(25.5827)" xlink:href="#a">
-                                                </use>
-                                                <use width="30" height="20"
-                                                    transform="rotate(-98.1 198 -82) scale(25.6)" xlink:href="#a"></use>
-                                                <use width="30" height="20"
-                                                    transform="rotate(-74 272.4 -114) scale(25.6137)" xlink:href="#a">
-                                                </use>
-                                                <use width="30" height="20"
-                                                    transform="matrix(16 -19.968 19.968 16 256 230.4)" xlink:href="#a">
-                                                </use>
-                                            </svg>
-                                            China
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="relative w-full">
-                            <input type="search" id="location-search"
-                                class="block p-2.5 w-full z-20 text-sm text-gray-900  rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                                required="">
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <label for="base-input"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Withdraw Address</label>
-                    <input type="text" id="base-input"
-                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                </div>
-                <div>
-                    <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
-                        Withdraw Network</label>
-                    <select id="countries"
-                        class=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected="">BTB (Arrival Time 2 Mins)</option>
-                        <option value="US">BTC (Arrival Time 2 Mins)</option>
-                        <option value="CA">BSC (Arrival Time 2 Mins)</option>
-                        <option value="FR">ETH (Arrival Time 2 Mins)</option>
+                    <label for="coin-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
+                        Coin</label>
+                    <select id="coin-select"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="BTC">BTC - Bitcoin</option>
+                        <option value="ETH">ETH - Ethereum</option>
+                        <option value="USDT">USDT - Tether</option>
+                        <option value="BNB">BNB - Binance Coin</option>
+                        <option value="SOL">SOL - Solana</option>
                     </select>
                 </div>
-                <div class="grid grid-cols-1 ">
-                    
-                    
+                <div>
+                    <label for="alert-price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alert
+                        Price (USD)</label>
+                    <input type="number" id="alert-price" step="any"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Enter price to trigger alert" required>
+                </div>
+
+                <div>
+                    <label for="alert-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alert Type 
+                        </label>
+                    <select id="alert-type"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="above">MA</option>
+                        <option value="below">Price</option>
+                        <option value="above">RSI</option>
+                       
+                    </select>
+                </div>
+
+                <div>
+                    <label for="alert-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Trigger Condition
+                        </label>
+                    <select id="alert-type"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="above">Above</option>
+                        <option value="below">Below</option>
+                    </select>
+                </div>
+
+                <div>
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notification Method</label>
+    <div class="flex items-center mb-2">
+        <input id="notify-email" name="notificationMethod" type="radio" value="email"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
+        <label for="notify-email" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email</label>
+    </div>
+    <div class="flex items-center mb-2">
+        <input id="notify-telegram" name="notificationMethod" type="radio" value="telegram"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+        <label for="notify-telegram" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Telegram</label>
+    </div>
+</div>
+
+                <div>
+                    <button type="submit"
+                        class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Set Alert
+                    </button>
                 </div>
             </form>
         </div>
-        <!-- Deposit -->
-        <div class="col-span-10 lg:col-span-6">
-            <div class="grid grid-cols-1 gap-4 border rounded-lg border-gray-200 dark:border-gray-700 p-4">
-                <div class=" border-b border-gray-200 dark:border-gray-700 grid grid-cols-2 md:grid-cols-2 content-end">
-                    <div class="flex  justify-between items-center">
-                        <h4 class="text-2xl   font-bold">Deposit</h4>
-                    </div>
-                    <div class="flex justify-end">
-                        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center capitalize tabs-primary "
-                            id="default-tab-in" data-tabs-toggle="#default-tab-content" role="tablist">
-                            <li class="me-2" role="presentation">
-                                <button
-                                    class="inline-block p-4 border-b-2 rounded-t-lg capitalize text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 border-blue-600 dark:border-blue-500"
-                                    id="cash-tab" data-tabs-target="#cash" type="button" role="tab" aria-controls="cash"
-                                    aria-selected="true">Crypto</button>
-                            </li>
-                            <li class="me-2" role="presentation">
-                                <button
-                                    class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 capitalize dark:border-transparent text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-700"
-                                    id="dashboard-tab" data-tabs-target="#crypton" type="button" role="tab"
-                                    aria-controls="crypton" aria-selected="false">Cash</button>
-                            </li>
-                        </ul>
+        
+        <!-- Holdings -->
+<div class="col-span-10 lg:col-span-6">
+    <div class="grid grid-cols-1 gap-4 border rounded-lg border-gray-200 dark:border-gray-700 p-4">
+        <div class="border-b border-gray-200 dark:border-gray-700 grid grid-cols-2 md:grid-cols-2 content-end">
+            <div class="flex justify-between items-center">
+                <h4 class="text-2xl font-bold">Holdings</h4>
+            </div>
+            <div class="flex justify-end">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center capitalize tabs-primary"
+                    id="default-tab-in" data-tabs-toggle="#default-tab-content" role="tablist">
+                    <li class="me-2" role="presentation">
+                        <button
+                            class="inline-block p-4 border-b-2 rounded-t-lg capitalize text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 border-blue-600 dark:border-blue-500"
+                            id="holdings-tab" data-tabs-target="#holdings" type="button" role="tab" aria-controls="holdings"
+                            aria-selected="true" onclick="togglediv('coins')">Coins</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button
+                            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 capitalize dark:border-transparent text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-700"
+                            id="alerts-tab" data-tabs-target="#alerts" type="button" role="tab"
+                            aria-controls="alerts" aria-selected="false" onclick="togglediv('alerts')">Alerts</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="default-tab-content-in" class="h-full">
+            <!-- Holdings Tab -->
+            <div class="" id="holdings" role="tabpanel" aria-labelledby="holdings-tab">
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <h6 class="mb-4 font-semibold text-gray-900 dark:text-white">Top Coins</h6>
+                        <table class="min-w-full border-separate border-spacing-y-2 space-y-2">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white">Symbol</th>
+                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white">Amount</th>
+                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white">Value (USD)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg"></tr>
+                                        <td class="px-6 py-4 font-bold">0</td>
+                                        <td class="px-6 py-4">0</td>
+                                        <td class="px-6 py-4">0</td>
+                                    </tr>
+                                @* @foreach (var coin in Model.TopCoins)
+                                {
+                                    <tr class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg">
+                                        <td class="px-6 py-4 font-bold">@coin.Symbol</td>
+                                        <td class="px-6 py-4">@coin.Amount</td>
+                                        <td class="px-6 py-4">$@coin.ValueUsd</td>
+                                    </tr>
+                                } *@
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div id="default-tab-content-in" class="h-full ">
-                    <!-- sport -->
-                    <div class="" id="cash" role="tabpanel" aria-labelledby="cash-tab">
-                        <div class="grid grid-cols-1 gap-4">
-                            <div>
-                                <h6 class="mb-4 font-semibold text-gray-900 dark:text-white">Trending</h6>
-                                <ul
-                                    class="items-start w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <!-- BTC -->
-                                    <li
-                                        class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-license" type="radio" value=""
-                                                name="list-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-license"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">BTC</label>
-                                        </div>
-                                    </li>
-                                    <!-- ETH -->
-                                    <li
-                                        class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-id" type="radio" value="" name="list-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-id"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">ETH</label>
-                                        </div>
-                                    </li>
-                                    <!-- usdt -->
-                                    <li
-                                        class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-military" type="radio" value=""
-                                                name="list-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-military"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">USDT</label>
-                                        </div>
-                                    </li>
-                                    <!-- bnb -->
-                                    <li
-                                        class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-military" type="radio" value=""
-                                                name="list-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-military"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">BNB</label>
-                                        </div>
-                                    </li>
-                                    <!-- eos -->
-                                    <li
-                                        class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-military" type="radio" value=""
-                                                name="list-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-military"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">EOS</label>
-                                        </div>
-                                    </li>
-                                    <!-- sol -->
-                                    <li class="w-full dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-passport" type="radio" value=""
-                                                name="list-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-passport"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">SOL</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h6 class="mb-4 font-semibold text-gray-900 dark:text-white">Choose Network</h6>
-                                <ul
-                                    class="items-start w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                    <!-- BTC -->
-                                    <li
-                                        class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-license" type="radio" value=""
-                                                name="list-radio-two"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-license"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ethereum(ERC20)</label>
-                                        </div>
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-id" type="radio" value=""
-                                                name="list-radio-two"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-id"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Solana</label>
-                                        </div>
-                                    </li>
-                                    <!-- ETH -->
-                                    <li
-                                        class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-id" type="radio" value=""
-                                                name="list-radio-two"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-id"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Cryptoon(CRC20)</label>
-                                        </div>
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-id" type="radio" value=""
-                                                name="list-radio-two"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-id"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tron(TRC20)</label>
-                                        </div>
-                                    </li>
-                                    <!-- usdt -->
-                                    <li class="w-full border-b border-gray-200 sm:border-b-0  dark:border-gray-600">
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-military" type="radio" value=""
-                                                name="list-radio-two"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-military"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">SmartC(SEP20)</label>
-                                        </div>
-                                        <div class="flex items-center ps-3">
-                                            <input id="horizontal-list-radio-military" type="radio" value=""
-                                                name="list-radio-two"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                            <label for="horizontal-list-radio-military"
-                                                class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ethereum(ERC30)</label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div>
-                                <div>
-                                    <div class="border border-gray-200 dark:border-gray-700 p-4 rounded-lg  ">
-                                        <div class="grid md:grid-cols-2 grid-cols-1 items-center">
-                                            <div class="flex flex-col items-center">
-                                                <h6
-                                                    class="my-2 font-semibold text-gray-900 dark:text-white text-center m-0 p-0">
-                                                    Select Network
-                                                    <span class="text-primary">USDT</span>
-                                                </h6>
-                                                <svg fill="#000000" viewBox="0 0 36 36" version="1.1"
-                                                    preserveAspectRatio="xMidYMid meet"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                    class="fill-gray-800 dark:fill-gray-200 w-64 h-64">
-                                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                        stroke-linejoin="round"></g>
-                                                    <g id="SVGRepo_iconCarrier">
-                                                        <title>qr-code-line</title>
-                                                        <path d="M5.6,4A1.6,1.6,0,0,0,4,5.6V12h8V4ZM10,10H6V6h4Z"
-                                                            class="clr-i-outline clr-i-outline-path-1"></path>
-                                                        <path d="M4,30.4A1.6,1.6,0,0,0,5.6,32H12V24H4ZM6,26h4v4H6Z"
-                                                            class="clr-i-outline clr-i-outline-path-2"></path>
-                                                        <path d="M24,32h6.4A1.6,1.6,0,0,0,32,30.4V24H24Zm2-6h4v4H26Z"
-                                                            class="clr-i-outline clr-i-outline-path-3"></path>
-                                                        <path d="M30.4,4H24v8h8V5.6A1.6,1.6,0,0,0,30.4,4ZM30,10H26V6h4Z"
-                                                            class="clr-i-outline clr-i-outline-path-4"></path>
-                                                        <polygon points="20 10 20 8 16 8 16 12 18 12 18 10 20 10"
-                                                            class="clr-i-outline clr-i-outline-path-5"></polygon>
-                                                        <rect x="12" y="12" width="2" height="2"
-                                                            class="clr-i-outline clr-i-outline-path-6"></rect>
-                                                        <rect x="14" y="14" width="4" height="2"
-                                                            class="clr-i-outline clr-i-outline-path-7"></rect>
-                                                        <polygon points="20 6 20 8 22 8 22 4 14 4 14 8 16 8 16 6 20 6"
-                                                            class="clr-i-outline clr-i-outline-path-8"></polygon>
-                                                        <rect x="4" y="14" width="2" height="4"
-                                                            class="clr-i-outline clr-i-outline-path-9"></rect>
-                                                        <polygon
-                                                            points="12 16 12 18 10 18 10 14 8 14 8 18 6 18 6 20 4 20 4 22 8 22 8 20 10 20 10 22 12 22 12 20 14 20 14 16 12 16"
-                                                            class="clr-i-outline clr-i-outline-path-10"></polygon>
-                                                        <polygon
-                                                            points="20 16 22 16 22 18 24 18 24 16 26 16 26 14 22 14 22 10 20 10 20 12 18 12 18 14 20 14 20 16"
-                                                            class="clr-i-outline clr-i-outline-path-11"></polygon>
-                                                        <polygon
-                                                            points="18 30 14 30 14 32 22 32 22 30 20 30 20 28 18 28 18 30"
-                                                            class="clr-i-outline clr-i-outline-path-12"></polygon>
-                                                        <polygon
-                                                            points="22 20 22 18 20 18 20 16 18 16 18 18 16 18 16 20 18 20 18 22 20 22 20 20 22 20"
-                                                            class="clr-i-outline clr-i-outline-path-13"></polygon>
-                                                        <rect x="30" y="20" width="2" height="2"
-                                                            class="clr-i-outline clr-i-outline-path-14"></rect>
-                                                        <rect x="22" y="20" width="6" height="2"
-                                                            class="clr-i-outline clr-i-outline-path-15"></rect>
-                                                        <polygon
-                                                            points="30 14 28 14 28 16 26 16 26 18 28 18 28 20 30 20 30 18 32 18 32 16 30 16 30 14"
-                                                            class="clr-i-outline clr-i-outline-path-16"></polygon>
-                                                        <rect x="20" y="22" width="2" height="6"
-                                                            class="clr-i-outline clr-i-outline-path-17"></rect>
-                                                        <polygon
-                                                            points="14 28 16 28 16 26 18 26 18 24 16 24 16 20 14 20 14 28"
-                                                            class="clr-i-outline clr-i-outline-path-18"></polygon>
-                                                        <rect x="0" y="0" width="36" height="36" fill-opacity="0">
-                                                        </rect>
-                                                    </g>
-                                                </svg>
-                                                <button type="submit"
-                                                    class=" mb-5 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">CONFIRM</button>
-                                            </div>
-                                            <div>
-                                                <ul
-                                                    class="list-none border border-gray-200 dark:border-gray-700  rounded-lg  ">
-                                                    <li
-                                                        class="flex justify-between border-b border-gray-200 dark:border-gray-700 p-2">
-                                                        <h6 class="text-gray-800 dark:text-white font-bold py-1">Minimum
-                                                            Deposit</h6>
-                                                        <span class="text-gray-400 dark:text-gray-50">0.0005086
-                                                            USDT</span>
-                                                    </li>
-                                                    <li
-                                                        class="flex justify-between border-b border-gray-200 dark:border-gray-700 p-2">
-                                                        <h6 class="text-gray-800 dark:text-white font-bold py-1">
-                                                            Expected Arrival</h6>
-                                                        <span class="text-gray-400 dark:text-gray-50">1 network
-                                                            confirm</span>
-                                                    </li>
-                                                    <li
-                                                        class="flex justify-between  border-gray-200 dark:border-gray-700 p-2">
-                                                        <h6 class="text-gray-800 dark:text-white font-bold py-1">
-                                                            Expected Unlock</h6>
-                                                        <span class="text-gray-400 dark:text-gray-50">1 network
-                                                            confirm</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- P2P -->
-                    <div class="hidden" id="crypton" role="tabpanel" aria-labelledby="crypton-tab">
-                        <div class="grid grid-cols-1 gap-4">
-                            <div>
-                                <form class="grid grid-cols-1 gap-4">
-                                    <div>
-                                        <p>
-                                            Deposit Ammount from your bank account and receive fund in
-                                            <span class="text-primary">USD</span>
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <label for="countries"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
-                                            Currency</label>
-                                        <select id="countries"
-                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option selected="">INR - Indian Rupee</option>
-                                            <option value="USD">USD - United States Dollar</option>
-                                            <option value="EUR">EUR - Euro</option>
-                                            <option value="JPY">JPY - Japanese Yen</option>
-                                            <option value="GBP">GBP - British Pound</option>
-                                            <option value="AUD">AUD - Australian Dollar</option>
-                                            <option value="CAD">CAD - Canadian Dollar</option>
-                                            <option value="CHF">CHF - Swiss Franc</option>
-                                            <option value="CNY">CNY - Chinese Yuan</option>
-                                            <option value="SEK">SEK - Swedish Krona</option>
-                                            <option value="NZD">NZD - New Zealand Dollar</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="countries-two"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Currency
-                                            to Deposit</label>
-                                        <select id="countries-two"
-                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option value="USD" selected="">USD - United States Dollar</option>
-                                            <option value="INR">INR - Indian Rupee</option>
-                                            <option value="EUR">EUR - Euro</option>
-                                            <option value="JPY">JPY - Japanese Yen</option>
-                                            <option value="GBP">GBP - British Pound</option>
-                                            <option value="AUD">AUD - Australian Dollar</option>
-                                            <option value="CAD">CAD - Canadian Dollar</option>
-                                            <option value="CHF">CHF - Swiss Franc</option>
-                                            <option value="CNY">CNY - Chinese Yuan</option>
-                                            <option value="SEK">SEK - Swedish Krona</option>
-                                            <option value="NZD">NZD - New Zealand Dollar</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <h6 class=" font-semibold text-gray-900 dark:text-white">Pay With</h6>
-                                    </div>
-                                    <div>
-                                        <div class="flex items-center mb-4">
-                                            <input id="default-radio-1" type="radio" value="" name="default-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-radio-1"
-                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Bank Card(Visa/MC)
-                                                <span class="text-gray-400 ">1.8% fee</span>
-                                            </label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input checked="" id="default-radio-2" type="radio" value=""
-                                                name="default-radio"
-                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="default-radio-2"
-                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                Advance cash Account Balance
-                                                <span class="text-gray-400 ">0 fee</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button type="submit"
-                                            class=" mb-5 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">CONFIRM</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+            </div>
+            <!-- Alerts Tab -->
+            <div class="hidden" id="alerts" role="tabpanel" aria-labelledby="alerts-tab">
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <h6 class="mb-4 font-semibold text-gray-900 dark:text-white">Active Price Alerts</h6>
+                        <table class="min-w-full border-separate border-spacing-y-2 space-y-2">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white">Coin</th>
+                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white">Target Price</th>
+                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white">Type</th>
+                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-900 dark:text-white">Email</th>
+                                    <th class="px-6 py-4"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @* @foreach (var alert in Model.PendingAlerts)
+                                {
+                                    <tr class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg">
+                                        <td class="px-6 py-4 font-bold">@alert.Coin</td>
+                                        <td class="px-6 py-4">$@alert.TargetPrice</td>
+                                        <td class="px-6 py-4">@alert.Type</td>
+                                        <td class="px-6 py-4">@alert.Email</td>
+                                        <td class="px-6 py-4">
+                                            <form asp-action="CancelAlert" asp-controller="Account" method="post" class="inline">
+                                                <input type="hidden" name="alertId" value="@alert.Id" />
+                                                <button type="submit" class="text-red-600 hover:underline text-sm font-medium">Cancel</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (!Model.PendingAlerts.Any())
+                                {
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">No active alerts.</td>
+                                    </tr>
+                                } *@
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
         <!-- Transaction History -->
         
+<!-- Transaction History -->
 <div class="col-span-10 md:col-span-10">
     <div class="border rounded-lg border-gray-200 dark:border-gray-700 p-4">
         <div class="flex justify-between items-center border-b pb-4 border-gray-200 dark:border-gray-700">
             <h4 class="text-2xl font-bold">Transaction History</h4>
         </div>
-        <div class="mt-4">
-            <div id="ordertabthree_wrapper" class="dataTables_wrapper no-footer">
-            
-                <table class="min-w-full border-separate border-spacing-y-2 space-y-2 dataTable no-footer dtr-inline collapsed"
-                       id="ordertabthree" aria-describedby="ordertabthree_info" style="width: 637px;">
-                    <thead>
-                        <tr>
-                            <th class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 bg-gray-100 rounded-l-lg dark:bg-gray-700 sorting sorting_asc"
-                                tabindex="0" aria-controls="ordertabthree" rowspan="1" colspan="1"
-                                style="width: 176px;" aria-sort="ascending"
-                                aria-label="Date: activate to sort column descending">Date</th>
-                            <th class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-700 rounded-r-lg md:rounded-r-none sorting"
-                                tabindex="0" aria-controls="ordertabthree" rowspan="1" colspan="1"
-                                style="width: 104px;" aria-label="Type: activate to sort column ascending">Type</th>
-                            <th class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-700 group-hover:bg-gray-50 dark:group-hover:bg-gray-600 sorting"
-                                tabindex="0" aria-controls="ordertabthree" rowspan="1" colspan="1"
-                                style="width: 67px;" aria-label="Asset: activate to sort column ascending">Asset</th>
-                            <th class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-700 group-hover:bg-gray-50 dark:group-hover:bg-gray-600 sorting"
-                                tabindex="0" aria-controls="ordertabthree" rowspan="1" colspan="1"
-                                style="width: 142px;" aria-label="Amount: activate to sort column ascending">Amount</th>
-                            <th class="px-6 py-4 whitespace-nowrap bg-gray-100 dark:bg-gray-700 rounded-r-lg sorting dtr-hidden"
-                                tabindex="0" aria-controls="ordertabthree" rowspan="1" colspan="1"
-                                style="width: 0px; display: none;"
-                                aria-label="Status: activate to sort column ascending">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="group rounded-l-lg rounded-r-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 odd">
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-l-lg dtr-control sorting_1" tabindex="0">2021-07-27 22:06</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-r-lg md:rounded-r-none">Deposit</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">BTC</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">59.00000000</td>
-                            <td class="px-6 py-4 whitespace-nowrap rounded-r-lg dtr-hidden" style="display: none;">
-                                <span class="text-green-700">Completed</span>
-                            </td>
-                        </tr>
-                        <tr class="group rounded-l-lg rounded-r-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 even">
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-l-lg dtr-control sorting_1" tabindex="0">2021-07-28 22:06</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-r-lg md:rounded-r-none">Deposit</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">BNB</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">459.00000000</td>
-                            <td class="px-6 py-4 whitespace-nowrap rounded-r-lg dtr-hidden" style="display: none;">
-                                <span class="text-green-700">Completed</span>
-                            </td>
-                        </tr>
-                        <tr class="group rounded-l-lg rounded-r-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 odd">
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-l-lg dtr-control sorting_1" tabindex="0">2021-08-18 13:07</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-r-lg md:rounded-r-none">Deposit</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">USDT</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">459.00000000</td>
-                            <td class="px-6 py-4 whitespace-nowrap rounded-r-lg dtr-hidden" style="display: none;">
-                                <span class="text-red-800">Cancle</span>
-                            </td>
-                        </tr>
-                        <tr class="group rounded-l-lg rounded-r-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 even">
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-l-lg dtr-control sorting_1" tabindex="0">2021-08-21 14:07</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-r-lg md:rounded-r-none">Withdraw</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">USDT</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">99.00000000</td>
-                            <td class="px-6 py-4 whitespace-nowrap rounded-r-lg dtr-hidden" style="display: none;">
-                                <span class="text-green-700">Completed</span>
-                            </td>
-                        </tr>
-                        <tr class="group rounded-l-lg rounded-r-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 odd">
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-l-lg dtr-control sorting_1" tabindex="0">2021-09-01 23:50</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-r-lg md:rounded-r-none">Deposit</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">USDT</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">323.50000000</td>
-                            <td class="px-6 py-4 whitespace-nowrap rounded-r-lg dtr-hidden" style="display: none;">
-                                <span class="text-green-700">Completed</span>
-                            </td>
-                        </tr>
-                        <tr class="group rounded-l-lg rounded-r-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 even">
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-l-lg dtr-control sorting_1" tabindex="0">2021-09-22 22:04</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800 rounded-r-lg md:rounded-r-none">Withdraw</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">USDT</td>
-                            <td class="px-6 py-4 whitespace-nowrap border-r border-gray-200 dark:border-gray-800">481.90172092</td>
-                            <td class="px-6 py-4 whitespace-nowrap rounded-r-lg dtr-hidden" style="display: none;">
-                                <span class="text-green-700">Completed</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-            </div>
+        <div class="mt-4 overflow-x-auto">
+            <table class="min-w-full border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+                <thead class="bg-gray-100 dark:bg-gray-700">
+                    <tr>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">Hash</th>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">Symbol</th>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">Date / Time</th>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">From Address</th>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">To Address</th>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">Value (ETH)</th>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">Transaction Fee</th>
+                        <th class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">Status</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-200">Block Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                    <tr class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-xs font-mono truncate max-w-xs">0x1234abcd...5678</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">ETH</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">2024-06-01 12:34</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 font-mono truncate max-w-xs">0xFromAddress123...</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 font-mono truncate max-w-xs">0xToAddress456...</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">1.2345</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">0.0021</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">
+                            <span class="inline-block px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-semibold">Completed</span>
+                        </td>
+                        <td class="px-4 py-3 text-xs">19876543</td>
+                    </tr>
+                    <tr class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 text-xs font-mono truncate max-w-xs">0x9876efgh...abcd</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">ETH</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">2024-06-01 13:45</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 font-mono truncate max-w-xs">0xFromAddress789...</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700 font-mono truncate max-w-xs">0xToAddress012...</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">0.5000</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">0.0010</td>
+                        <td class="px-4 py-3 border-r border-gray-200 dark:border-gray-700">
+                            <span class="inline-block px-2 py-1 rounded bg-yellow-100 text-yellow-800 text-xs font-semibold">Pending</span>
+                        </td>
+                        <td class="px-4 py-3 text-xs">19876544</td>
+                    </tr>
+                   
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

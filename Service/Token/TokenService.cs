@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using KaiCryptoTracker.AllApiCalls;
 
 namespace KaiCryptoTracker.TokenService;
 
@@ -8,14 +9,36 @@ public class TokenService : ITokenService
     private readonly IConfiguration _configuration;
 
     private readonly ILogger<TokenService> _logger;
+    private readonly IApiCalls _apicalls; 
 
     // private string url = "";
 
-    public TokenService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<TokenService> logger)
+    public TokenService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<TokenService> logger, IApiCalls apicalls)
     {
         _httpclientFactory = httpClientFactory;
         _configuration = configuration;
+        _apicalls = apicalls;
         _logger = logger;
+    }
+
+    public async Task<string> GetAllSupportedTokens()
+    {
+    
+        string json = string.Empty;
+        try
+        {
+            string? url = _configuration.GetSection("CoinGecko")["url"];
+
+            string fullurl = $"{url}list?include_platform=false";
+            json = await _apicalls.CoinGecko(fullurl);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+        }
+
+        return json;
+    
     }
 
     public Task GetAllTokenBalanceAsync(string walletaddress, string chain)
@@ -23,39 +46,23 @@ public class TokenService : ITokenService
         throw new NotImplementedException();
     }
 
-    public async Task GetTokenBalanceAsync(string walletaddress, string chain)
+    public async Task<string> GetTokenBalanceAsync(string walletaddress, string chain)
     {
-    
+        string json = string.Empty;
         try
         {
 
             string? url = _configuration.GetSection("Moralis")["Url"];
 
             string fullurl = $"{url}/{walletaddress}/erc20?chain={chain}";
-            var client = _httpclientFactory.CreateClient();
-
-            var request = new HttpRequestMessage(HttpMethod.Get, fullurl);
-            request.Headers.Accept.ParseAdd("application/json");
-
-            //get api key 
-            string? apikey = _configuration.GetSection("Moralis")["key"];
-
-            if (apikey != null) request.Headers.Add("X-API-Key", apikey);
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var streamcontent = response.Content.ReadAsStream();
-                var reader = new StreamReader(streamcontent);
-                string jsondata = await reader.ReadToEndAsync();
-            }
-
+            json = await _apicalls.Moralis(fullurl);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);
         }
+
+        return json;
 
     }
 
@@ -64,4 +71,6 @@ public class TokenService : ITokenService
     {
         throw new NotImplementedException();
     }
+
+  
 }
