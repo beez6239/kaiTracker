@@ -1,5 +1,9 @@
 using System.Threading.Tasks;
 using KaiCryptoTracker.AllApiCalls;
+using KaiCryptoTracker.DbContext;
+using KaiCryptoTracker.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace KaiCryptoTracker.TokenService;
 
@@ -9,19 +13,22 @@ public class TokenService : ITokenService
     private readonly IConfiguration _configuration;
 
     private readonly ILogger<TokenService> _logger;
-    private readonly IApiCalls _apicalls; 
+    private readonly IApiCalls _apicalls;
+
+    private readonly ApplicationDbContext _dbcontext; 
 
     // private string url = "";
 
-    public TokenService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<TokenService> logger, IApiCalls apicalls)
+    public TokenService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ILogger<TokenService> logger, IApiCalls apicalls, ApplicationDbContext dbcontext)
     {
         _httpclientFactory = httpClientFactory;
         _configuration = configuration;
         _apicalls = apicalls;
+        _dbcontext = dbcontext;
         _logger = logger;
     }
 
-    public async Task<string> GetAllSupportedTokens()
+    public async Task GetAllSupportedTokens()
     {
     
         string json = string.Empty;
@@ -31,13 +38,19 @@ public class TokenService : ITokenService
 
             string fullurl = $"{url}list?include_platform=false";
             json = await _apicalls.CoinGecko(fullurl);
+
+            Coins[]? coinlist = JsonConvert.DeserializeObject<Coins[]>(json);
+            if (coinlist != null)
+            {
+                await _dbcontext.AddRangeAsync(coinlist);
+                await _dbcontext.SaveChangesAsync();
+            }
+
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex.Message);
+            _logger.LogError(ex, "Failed to write to Database ");
         }
-
-        return json;
     
     }
 
@@ -64,6 +77,17 @@ public class TokenService : ITokenService
 
         return json;
 
+    }
+
+    public async Task<decimal> GetTokenCurrentPrice(string TokenID)
+    {
+         string? url = $"{_configuration.GetSection("CoinGecko")["simpleurl"]}{TokenID}";
+
+         var json = await _apicalls.CoinGecko(url);
+         
+         
+         
+        return 0m;
     }
 
 

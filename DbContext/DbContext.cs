@@ -20,6 +20,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Applicati
 
     public DbSet<Portfolio> Portfolios { get; set; }
 
+    public DbSet<Coins> Coins { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -8,7 +8,9 @@ public interface ITokenService
     public Task GetTokenMetaData(string walletaddress, string chain);
 
     //Coin Methods (Coin Gecko)
-    public Task<string> GetAllSupportedTokens();
+    public Task GetAllSupportedTokens();
+
+    public Task<decimal> GetTokenCurrentPrice(string TokenID);  //Token ID should be coingecko token id 
 
     
 }

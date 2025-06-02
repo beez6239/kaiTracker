@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using KaiCryptoTracker.WalletService;
 using KaiCryptoTracker.PortfolioService;
 using KaiCryptoTracker.AllApiCalls;
+using Newtonsoft.Json;
+using KaiCryptoTracker.ApiModels;
 
 namespace KaiCryptoTracker.Controllers;
 
@@ -120,7 +122,9 @@ public class AccountController : Controller
     [HttpPost]
    public async Task<IActionResult> TestEndpoint()
    {
-      await _tokenService.GetAllSupportedTokens();
+     var result =  await _tokenService.GetAllSupportedTokens();
+
+      Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
 
       return Ok();
    }
