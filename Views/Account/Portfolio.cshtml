@@ -187,10 +187,11 @@
 
             </div>
         </div>
-         <div class="col-span-10 lg:col-span-4 " id="chart">
-            <div id="coins-content" class="">
-           
+
+
     <!-- TradingView Widget Embed with Fullscreen Option -->
+    <div class="col-span-10 lg:col-span-4 " id="chart">
+    <div id="coins-content">
     <div class="w-full flex flex-col items-center py-6 relative">
          
         <div id="tv-chart-container" class="w-full" style="max-width: 900px;">
@@ -206,6 +207,7 @@
         </div>
     </div>
 </div>
+
 <script>
 function toggleTradingViewFullscreen(e) {
     e.preventDefault();
@@ -234,79 +236,111 @@ document.addEventListener('fullscreenchange', function () {
     }
 });
 </script>
-         </div>
+ </div>
 
         
-        <!-- Alert form -->
-        <div class="col-span-10 lg:col-span-4 hidden" id="alert">
-            <form class="grid grid-cols-1 gap-4 border rounded-lg border-gray-200 dark:border-gray-700 p-4">
-                <div class="flex justify-between items-center border-b pb-4 border-gray-200 dark:border-gray-700">
-                    <h4 class="text-2xl font-bold">Set Price Alert</h4>
-                </div>
+       <!-- Alert form -->
+<div class="col-span-10 lg:col-span-4 hidden" id="alert">
+    <form class="grid grid-cols-1 gap-4 border rounded-lg border-gray-200 dark:border-gray-700 p-4">
+        <div class="flex justify-between items-center border-b pb-4 border-gray-200 dark:border-gray-700">
+            <h4 class="text-2xl font-bold">Set Price Alert</h4>
+        </div>
+        <div>
+            <label for="coin-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Coin</label>
+            <select id="coin-select"
+                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="BTC">BTC - Bitcoin</option>
+                <option value="ETH">ETH - Ethereum</option>
+                <option value="USDT">USDT - Tether</option>
+                <option value="BNB">BNB - Binance Coin</option>
+                <option value="SOL">SOL - Solana</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="alert-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alert Type</label>
+            <select id="alert-type"
+                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="price">Price</option>
+                <option value="ma">MA</option>
+                <option value="rsi">RSI</option>
+            </select>
+        </div>
+
+        <!-- Price input -->
+        <div id="price-fields" class="hidden">
+            <label for="alert-price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alert Price (USD)</label>
+            <input type="number" id="alert-price" step="any"
+                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Enter price to trigger alert">
+        </div>
+
+        <!-- MA input -->
+        <div id="ma-fields" class="hidden">
+            <div class="grid grid-cols-2 gap-2">
                 <div>
-                    <label for="coin-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
-                        Coin</label>
-                    <select id="coin-select"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="BTC">BTC - Bitcoin</option>
-                        <option value="ETH">ETH - Ethereum</option>
-                        <option value="USDT">USDT - Tether</option>
-                        <option value="BNB">BNB - Binance Coin</option>
-                        <option value="SOL">SOL - Solana</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="alert-price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alert
-                        Price (USD)</label>
-                    <input type="number" id="alert-price" step="any"
+                    <label for="ma-short" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Short MA Period</label>
+                    <input type="number" id="ma-short" min="1"
                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Enter price to trigger alert" required>
+                        placeholder="e.g. 7">
                 </div>
 
                 <div>
-                    <label for="alert-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alert Type 
-                        </label>
-                    <select id="alert-type"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="above">MA</option>
-                        <option value="below">Price</option>
-                        <option value="above">RSI</option>
-                       
-                    </select>
+                    <label for="ma-long" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Long MA Period</label>
+                    <input type="number" id="ma-long" min="1"
+                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="e.g. 12">
                 </div>
+            </div>
+            <div class="mt-2">
+                <label for="ma-condition" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Trigger Condition</label>
+                <select id="ma-condition"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="above">Short MA Above Long MA</option>
+                    <option value="below">Short MA Below Long MA</option>
+                </select>
+            </div>
+        </div>
 
-                <div>
-                    <label for="alert-type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Trigger Condition
-                        </label>
-                    <select id="alert-type"
-                        class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="above">Above</option>
-                        <option value="below">Below</option>
-                    </select>
-                </div>
+        <!-- RSI input -->
+        <div id="rsi-fields" class="hidden">
+            <label for="rsi-value" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">RSI Value</label>
+            <input type="number" id="rsi-value" min="1" max="100"
+                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="e.g. 70">
+            <div class="mt-2">
+                <label for="rsi-condition" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Trigger Condition</label>
+                <select id="rsi-condition"
+                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="above">Above</option>
+                    <option value="below">Below</option>
+                </select>
+            </div>
+        </div>
 
-                <div>
-    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notification Method</label>
-    <div class="flex items-center mb-2">
-        <input id="notify-email" name="notificationMethod" type="radio" value="email"
-            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
-        <label for="notify-email" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email</label>
-    </div>
-    <div class="flex items-center mb-2">
-        <input id="notify-telegram" name="notificationMethod" type="radio" value="telegram"
-            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-        <label for="notify-telegram" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Telegram</label>
-    </div>
+        <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notification Method</label>
+            <div class="flex items-center mb-2">
+                <input id="notify-email" name="notificationMethod" type="radio" value="email"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked>
+                <label for="notify-email" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email</label>
+            </div>
+            <div class="flex items-center mb-2">
+                <input id="notify-telegram" name="notificationMethod" type="radio" value="telegram"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="notify-telegram" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Telegram</label>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit"
+                class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Set Alert
+            </button>
+        </div>
+    </form>
 </div>
 
-                <div>
-                    <button type="submit"
-                        class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Set Alert
-                    </button>
-                </div>
-            </form>
-        </div>
         
         <!-- Holdings -->
 <div class="col-span-10 lg:col-span-6">
@@ -334,6 +368,7 @@ document.addEventListener('fullscreenchange', function () {
             </div>
         </div>
         <div id="default-tab-content-in" class="h-full">
+            
             <!-- Holdings Tab -->
             <div class="" id="holdings" role="tabpanel" aria-labelledby="holdings-tab">
                 <div class="grid grid-cols-1 gap-4">
@@ -366,11 +401,12 @@ document.addEventListener('fullscreenchange', function () {
                     </div>
                 </div>
             </div>
+
             <!-- Alerts Tab -->
             <div class="hidden" id="alerts" role="tabpanel" aria-labelledby="alerts-tab">
                 <div class="grid grid-cols-1 gap-4">
                     <div>
-                        <h6 class="mb-4 font-semibold text-gray-900 dark:text-white">Active Price Alerts</h6>
+                        <h6 class="mb-4 font-semibold text-gray-900 dark:text-white">Active Alerts</h6>
                         <table class="min-w-full border-separate border-spacing-y-2 space-y-2">
                             <thead>
                                 <tr>

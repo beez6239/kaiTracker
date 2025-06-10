@@ -15,7 +15,7 @@ public class TokenService : ITokenService
     private readonly ILogger<TokenService> _logger;
     private readonly IApiCalls _apicalls;
 
-    private readonly ApplicationDbContext _dbcontext; 
+    private readonly ApplicationDbContext _dbcontext;
 
     // private string url = "";
 
@@ -28,22 +28,72 @@ public class TokenService : ITokenService
         _logger = logger;
     }
 
-    public async Task GetAllSupportedTokens()
+    public async Task<Dictionary<string, string>> GetAllBinanceSupportedTokensAsync()
     {
-    
         string json = string.Empty;
+        try
+        {
+            string? url = _configuration.GetSection("Binance")["url"];
+            if (!string.IsNullOrEmpty(url))
+            {
+                string fullurl = $"{url}exchangeInfo";
+                json = await _apicalls.Binance(fullurl);
+
+                var coinlistdata = JObject.Parse(json);
+                if (coinlistdata != null)
+                {
+                    //return filtered list of coins and return as dictionary (baseAsset as key )
+                    return coinlistdata["symbols"]
+                    .Where(s => s["status"].ToString() == "TRADING")
+                    .GroupBy(b => b["baseAsset"].ToString().ToLower())
+                    .ToDictionary(
+                        k => k.Key,
+                        k => k.FirstOrDefault()["symbol"].ToString()
+                    );
+
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+        }
+
+        return null;
+    }
+
+    public async Task<List<Coins>> GetAllCoinGeckoSupportedTokensAsync()  //coin Gecko api to get all supported coins 
+    {
+
+        string json = string.Empty;
+
         try
         {
             string? url = _configuration.GetSection("CoinGecko")["url"];
 
-            string fullurl = $"{url}list?include_platform=false";
-            json = await _apicalls.CoinGecko(fullurl);
-
-            Coins[]? coinlist = JsonConvert.DeserializeObject<Coins[]>(json);
-            if (coinlist != null)
+            if (!string.IsNullOrEmpty(url))
             {
-                await _dbcontext.AddRangeAsync(coinlist);
-                await _dbcontext.SaveChangesAsync();
+                string fullurl = $"{url}list?include_platform=false";
+                json = await _apicalls.Binance(fullurl);
+
+                //store response in jobject list first 
+                var listofcoins = JsonConvert.DeserializeObject<List<JObject>>(json);
+
+                //add needed data to (Coin) class 
+                var coindatafromgecko = listofcoins.Select(c => new Coins
+                {
+                    CoinGeckoId = c["id"].ToString(),
+                    Name = c["name"]?.ToString(),
+                    Symbol = c["symbol"]?.ToString(),
+                    BinanceSymbol = c["symbol"]?.ToString()
+
+                }).ToList();
+
+                if (coindatafromgecko != null)
+
+                    return coindatafromgecko;
+
             }
 
         }
@@ -51,7 +101,8 @@ public class TokenService : ITokenService
         {
             _logger.LogError(ex, "Failed to write to Database ");
         }
-    
+
+        return null;
     }
 
     public Task GetAllTokenBalanceAsync(string walletaddress, string chain)
@@ -79,22 +130,56 @@ public class TokenService : ITokenService
 
     }
 
-    public async Task<decimal> GetTokenCurrentPrice(string TokenID)
+    public async Task<decimal> GetTokenCurrentPriceAsync(string TokenID)
     {
-         string? url = $"{_configuration.GetSection("CoinGecko")["simpleurl"]}{TokenID}";
+        string? url = $"{_configuration.GetSection("CoinGecko")["simpleurl"]}{TokenID}";
 
-         var json = await _apicalls.CoinGecko(url);
-         
-         
-         
+        var json = await _apicalls.CoinGecko(url);
+
+
+
         return 0m;
     }
 
 
-    public Task GetTokenMetaData(string walletaddress, string chain)
+    public Task GetTokenMetaDataAsync(string walletaddress, string chain)
     {
         throw new NotImplementedException();
     }
 
-  
+
+    public async Task<List<Coins>> SupportedCoinsAfterMergeAsync()
+    {
+        var coinlistfrombinance = await GetAllBinanceSupportedTokensAsync();
+        var coinlistfromgecko = await GetAllCoinGeckoSupportedTokensAsync();
+        
+         //filter only coins that is available in binance dictionary and map to list of coins type
+        return coinlistfromgecko.Where(c => coinlistfrombinance.ContainsKey(c.Symbol))
+        .Select(c => new Coins
+        {
+            BinanceSymbol = coinlistfrombinance[c.Symbol],
+            CoinGeckoId = c.CoinGeckoId,
+            Name = c.Name,
+            Symbol = c.Symbol 
+            
+
+        }).ToList();
+
+    }
+
+    public async Task AddListOfSupportedTokensToDb()
+    {
+        try
+        {
+            var coins = await SupportedCoinsAfterMergeAsync();
+            await _dbcontext.AddRangeAsync(coins);
+            _dbcontext.SaveChanges();
+           
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error saving supported coins to database");
+        }  
+        
+    }
 }

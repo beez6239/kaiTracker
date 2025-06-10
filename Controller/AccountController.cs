@@ -11,7 +11,9 @@ using KaiCryptoTracker.WalletService;
 using KaiCryptoTracker.PortfolioService;
 using KaiCryptoTracker.AllApiCalls;
 using Newtonsoft.Json;
+using KaiCryptoTracker.AlertModel;
 using KaiCryptoTracker.ApiModels;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace KaiCryptoTracker.Controllers;
 
@@ -24,6 +26,7 @@ public class AccountController : Controller
    private readonly ITokenService _tokenService;
    private readonly IWalletService _walletservice;
    private readonly IPortfolioService _portfolioservice;
+   
 
    public AccountController(ILogger<AccountController> logger, ITokenService tokenService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IWalletService walletservice, IPortfolioService portfolioservice)
    {
@@ -118,16 +121,44 @@ public class AccountController : Controller
    }
 
 
+   [HttpPost]
+   [Route("[action]")]
+   public IActionResult AlertAction(AlertAction alert)
+   {
+
+
+      if (ModelState.IsValid)
+      {
+         var alertypes = AlertTypes.AlertTypeValues();
+         if (alert.AlertType == alertypes[0]) //price alert 
+         {
+
+         } else if (alert.AlertType == alertypes[1]) //moving average alert
+         {
+
+         } else if (alert.AlertType == alertypes[2]) //rsi alert
+         {
+
+         }
+
+         
+   
+      }
+      return new JsonResult("");
+   }
+
+
    [Route("[action]")]
     [HttpPost]
    public async Task<IActionResult> TestEndpoint()
    {
-     var result =  await _tokenService.GetAllSupportedTokens();
 
-      Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
+       await _tokenService.SupportedCoinsAfterMergeAsync();
+
+      // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
 
       return Ok();
    }
-   
+
 
 }

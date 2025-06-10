@@ -82,6 +82,40 @@ public class ApiCalls : IApiCalls
         return jsondata;
     }
 
+      public async Task<string> Binance(string url)  //Binance public api 
+    {
+        string jsondata = string.Empty;
+        try
+        {
+            var client = _httpclientFactory.CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Accept.ParseAdd("application/json");
+
+            //get api key 
+            // string? apikey = _configuration.GetSection("CoinGecko")["key"];
+
+            // if (apikey != null) request.Headers.Add("x-cg-demo-api-key", apikey);
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var streamcontent = response.Content.ReadAsStream();
+                var reader = new StreamReader(streamcontent);
+                jsondata = await reader.ReadToEndAsync();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+        }
+
+        return jsondata;
+    }
+    
+
   
 
     

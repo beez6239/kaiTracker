@@ -15,4 +15,8 @@ public interface IWalletService
     Task<TokenBalanceByWallet> GetTokenBalanceByWallet(string walletaddress, string chain);
 
     Task<Activechains?> GetWalletActiveChains(string walletaddress);
+
+    
+
+    
 }
