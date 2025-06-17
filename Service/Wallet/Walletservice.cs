@@ -80,7 +80,7 @@ public class WalletService : IWalletService
         {
             string url = $"{_configuration.GetSection("Moralis")["walleturl"]}{walletaddress}/profitability/summary?chain={chain}";
 
-            var json = await _apicalls.Moralis(url);
+            var json = await _apicalls.MoralisAsync(url);
             walletpnlsummary = JsonConvert.DeserializeObject<WalletPnlSummary>(json);
             if (walletpnlsummary != null)
             {
@@ -105,7 +105,7 @@ public class WalletService : IWalletService
         {
             string url = $"{_configuration.GetSection("Moralis")["walleturl"]}{walletaddress}/chains";
 
-            var json = await _apicalls.Moralis(url);
+            var json = await _apicalls.MoralisAsync(url);
 
               activechains = JsonConvert.DeserializeObject<Activechains>(json);
                 if (activechains != null)
@@ -130,7 +130,7 @@ public class WalletService : IWalletService
         {
             string url = $"{_configuration.GetSection("Moralis")["Url"]}{walletaddress}/tokens?chain={chain}";
 
-            var json = await _apicalls.Moralis(url);
+            var json = await _apicalls.MoralisAsync(url);
             tokenbalancebywallet = JsonConvert.DeserializeObject<TokenBalanceByWallet>(json);
             if (tokenbalancebywallet != null)
             {

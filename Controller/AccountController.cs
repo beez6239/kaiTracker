@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using KaiCryptoTracker.AlertModel;
 using KaiCryptoTracker.ApiModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using KaiCryptoTracker.Helpers;
 
 namespace KaiCryptoTracker.Controllers;
 
@@ -153,7 +154,9 @@ public class AccountController : Controller
    public async Task<IActionResult> TestEndpoint()
    {
 
-       await _tokenService.SupportedCoinsAfterMergeAsync();
+       var interval = HelperClass.InputIntervals(3);
+
+       await _tokenService.GetCoinCandleDataAsync("BTCUSDT", interval);
 
       // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
 

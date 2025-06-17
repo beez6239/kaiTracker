@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using KaiCryptoTracker.WalletService;
 using KaiCryptoTracker.PortfolioService;
 using KaiCryptoTracker.AllApiCalls;
+using KaiCryptoTracker.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,14 +51,23 @@ var app = builder.Build();
 //     await dbcontext.Database.MigrateAsync();
 
 // }
+
+// using (var scope = app.Services.CreateScope())
+// {
+//     var tokens = scope.ServiceProvider.GetRequiredService<CoinMetaData>();
+//     await tokens.AddCoinSeedDatab();
+
+// }
+
+
 if (app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
-else
-{
-    app.UseHsts();
-}
+    {
+        app.UseHttpsRedirection();
+    }
+    else
+    {
+        app.UseHsts();
+    }
 
 
 app.UseStaticFiles();

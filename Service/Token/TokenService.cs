@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using KaiCryptoTracker.AllApiCalls;
 using KaiCryptoTracker.DbContext;
+using KaiCryptoTracker.Helpers;
 using KaiCryptoTracker.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -37,7 +38,7 @@ public class TokenService : ITokenService
             if (!string.IsNullOrEmpty(url))
             {
                 string fullurl = $"{url}exchangeInfo";
-                json = await _apicalls.Binance(fullurl);
+                json = await _apicalls.BinanceAsync(fullurl);
 
                 var coinlistdata = JObject.Parse(json);
                 if (coinlistdata != null)
@@ -75,7 +76,7 @@ public class TokenService : ITokenService
             if (!string.IsNullOrEmpty(url))
             {
                 string fullurl = $"{url}list?include_platform=false";
-                json = await _apicalls.Binance(fullurl);
+                json = await _apicalls.BinanceAsync(fullurl);
 
                 //store response in jobject list first 
                 var listofcoins = JsonConvert.DeserializeObject<List<JObject>>(json);
@@ -119,7 +120,7 @@ public class TokenService : ITokenService
             string? url = _configuration.GetSection("Moralis")["Url"];
 
             string fullurl = $"{url}/{walletaddress}/erc20?chain={chain}";
-            json = await _apicalls.Moralis(fullurl);
+            json = await _apicalls.MoralisAsync(fullurl);
         }
         catch (Exception ex)
         {
@@ -134,7 +135,7 @@ public class TokenService : ITokenService
     {
         string? url = $"{_configuration.GetSection("CoinGecko")["simpleurl"]}{TokenID}";
 
-        var json = await _apicalls.CoinGecko(url);
+        var json = await _apicalls.CoinGeckoAsync(url);
 
 
 
@@ -148,38 +149,44 @@ public class TokenService : ITokenService
     }
 
 
+    // Function to merge supported coin metadata
     public async Task<List<Coins>> SupportedCoinsAfterMergeAsync()
     {
         var coinlistfrombinance = await GetAllBinanceSupportedTokensAsync();
         var coinlistfromgecko = await GetAllCoinGeckoSupportedTokensAsync();
-        
-         //filter only coins that is available in binance dictionary and map to list of coins type
+
+        //filter only coins that is available in binance dictionary and map to list of coins type
         return coinlistfromgecko.Where(c => coinlistfrombinance.ContainsKey(c.Symbol))
         .Select(c => new Coins
         {
             BinanceSymbol = coinlistfrombinance[c.Symbol],
             CoinGeckoId = c.CoinGeckoId,
             Name = c.Name,
-            Symbol = c.Symbol 
-            
+            Symbol = c.Symbol
+
 
         }).ToList();
 
     }
 
-    public async Task AddListOfSupportedTokensToDb()
+
+    //Function to get candle closing prices 
+    public async Task<List<decimal>> GetCoinCandleDataAsync(string symbol, CandleInterval interval)
     {
-        try
+        string kline = "klines";
+        var url = $"{_configuration.GetSection("Binance")["url"]}{kline}?symbol={symbol}&interval={interval.ConvertBinanceString()}";
+        var json = await _apicalls.BinanceAsync(url);
+        var prices = JArray.Parse(json);
+        List<decimal> closingprices = [];
+        foreach (var price in prices)
         {
-            var coins = await SupportedCoinsAfterMergeAsync();
-            await _dbcontext.AddRangeAsync(coins);
-            _dbcontext.SaveChanges();
-           
+            var closingprice = Convert.ToDecimal(price[4]);
+
+            closingprices.Add(HelperClass.FormatDigitToThreeDecimalHelper(closingprice));
+
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error saving supported coins to database");
-        }  
-        
+
+        return closingprices;
+
     }
 }

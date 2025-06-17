@@ -14,7 +14,7 @@ public class ApiCalls : IApiCalls
     }
 
 
-    public async Task<string> Moralis(string url)
+    public async Task<string> MoralisAsync(string url)
     {
 
         string jsondata = string.Empty;
@@ -49,7 +49,7 @@ public class ApiCalls : IApiCalls
         return jsondata;
     }
 
-    public async Task<string> CoinGecko(string url)
+    public async Task<string> CoinGeckoAsync(string url)
     {
         string jsondata = string.Empty;
         try
@@ -82,7 +82,7 @@ public class ApiCalls : IApiCalls
         return jsondata;
     }
 
-      public async Task<string> Binance(string url)  //Binance public api 
+      public async Task<string> BinanceAsync(string url)  //Binance public api 
     {
         string jsondata = string.Empty;
         try

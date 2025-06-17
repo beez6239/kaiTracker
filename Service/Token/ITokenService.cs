@@ -18,8 +18,9 @@ public interface ITokenService
     public Task<Dictionary<string, string>> GetAllBinanceSupportedTokensAsync();
 
     public Task<decimal> GetTokenCurrentPriceAsync(string TokenID);  //Token ID should be coingecko token id 
+
+    public Task<List<decimal>> GetCoinCandleDataAsync(string symbol , CandleInterval interval); 
     
-     Task AddListOfSupportedTokensToDb();
 
     
 }
