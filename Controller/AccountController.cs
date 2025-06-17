@@ -154,9 +154,9 @@ public class AccountController : Controller
    public async Task<IActionResult> TestEndpoint()
    {
 
-       var interval = HelperClass.InputIntervals(3);
+      //  var interval = HelperClass.InputIntervals(3);
 
-       await _tokenService.GetCoinCandleDataAsync("BTCUSDT", interval);
+       await _tokenService.CoinMarketData();
 
       // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
 

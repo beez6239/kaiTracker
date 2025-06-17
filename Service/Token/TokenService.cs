@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using KaiCryptoTracker.AllApiCalls;
 using KaiCryptoTracker.DbContext;
 using KaiCryptoTracker.Helpers;
+using KaiCryptoTracker.MarketDto;
 using KaiCryptoTracker.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -27,6 +28,21 @@ public class TokenService : ITokenService
         _apicalls = apicalls;
         _dbcontext = dbcontext;
         _logger = logger;
+    }
+
+    public async Task<List<MarketDataDto>> CoinMarketData()  //Get all coins market data
+    {
+        string url = $"{_configuration.GetSection("CoinGecko")["url"]}markets?vs_currency=usd";
+        string json = string.Empty;
+        if (!string.IsNullOrEmpty(url))
+        {
+            json = await _apicalls.CoinGeckoAsync(url);
+
+        }
+        var marketdata = JsonConvert.DeserializeObject<List<MarketDataDto>>(json);
+        
+        return marketdata; 
+   
     }
 
     public async Task<Dictionary<string, string>> GetAllBinanceSupportedTokensAsync()
@@ -189,4 +205,5 @@ public class TokenService : ITokenService
         return closingprices;
 
     }
+
 }

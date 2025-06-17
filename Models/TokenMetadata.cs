@@ -29,14 +29,3 @@ public class TokenMetadata
     public ICollection<TokenHolding> TokenHoldings = new List<TokenHolding>();
 
 }
-
-public class Market
-{
-    //  public Guid ID {get;set;}
-    //  public string Name {get;set;}
-    //  public string Symbol {get;set;}
-    //  public string Chain {get;set;}
-    //  public string Address {get;set;}
-    //  public int Amount {get; set;}
-
-}
