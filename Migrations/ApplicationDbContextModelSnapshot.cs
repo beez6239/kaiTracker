@@ -152,6 +152,25 @@ namespace KaiCryptoTracker.Migrations
                     b.ToTable("Chains");
                 });
 
+            modelBuilder.Entity("KaiCryptoTracker.Models.Coins", b =>
+                {
+                    b.Property<string>("CoinGeckoId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BinanceSymbol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Symbol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CoinGeckoId");
+
+                    b.ToTable("Coins");
+                });
+
             modelBuilder.Entity("KaiCryptoTracker.Models.Portfolio", b =>
                 {
                     b.Property<Guid>("PortfolioId")

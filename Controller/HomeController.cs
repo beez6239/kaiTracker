@@ -4,17 +4,20 @@ using KaiCryptoTracker.Models;
 using KaiCryptoTracker.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using KaiCryptoTracker.Market;
 
 namespace KaiCryptoTracker.Controllers;
 
 public class HomeController : Controller
 {
   private ILogger<HomeController> _logger;
+  private readonly MarketBase _market; 
   private readonly UserManager<ApplicationUser> _userManager;
-  public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager)
+  public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager, MarketBase market)
   {
     _logger = logger;
     _userManager = userManager;
+    _market = market; 
   }
 
   [Route("[action]")]
@@ -79,9 +82,11 @@ public class HomeController : Controller
   
 
   [Route("[action]")]
-  public IActionResult TestPage()
+  public async Task<IActionResult> Market()
   {
-    return View();
+    var market =  await _market.livemarketdata();
+    
+    return View(market);
   }
 
 

@@ -6,22 +6,37 @@ namespace KaiCryptoTracker.Market;
 public class MartketData : MarketBase
 {
     private readonly ITokenService _tokenservice;
-    public MartketData(ITokenService tokenService) : base(tokenService)
+    private readonly ILogger<MartketData> _logger;
+    public MartketData(ITokenService tokenService, ILogger<MartketData> logger) : base(tokenService, logger)
     {
         _tokenservice = tokenService;
+        _logger = logger;
     }
 
 
    //Compare moving average 
     public async override Task<bool> CompareMovingAverage(int firstcandlecount, int secondcandlecount, string symbol, int interval)
     {
-        var task = new[]
+        
+        var task = new List<Task<decimal>>
         {
-            await GetMovingAverage(symbol,interval, firstcandlecount ),
-            await GetMovingAverage(symbol,interval, secondcandlecount )
+            GetMovingAverage(symbol, interval, firstcandlecount),
+            GetMovingAverage(symbol, interval, secondcandlecount)
         };
 
-        return task[0] > task[1];
+        try
+        {
+            var t = await Task.WhenAll(task);
+
+            return HelperClass.FormatDigitToFourDecimalHelper(t[0]) > HelperClass.FormatDigitToFourDecimalHelper(t[1]); 
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("{0} getting moving average attempts failed ", nameof(task));
+        }
+       
+
+        return false;
     }
 
 

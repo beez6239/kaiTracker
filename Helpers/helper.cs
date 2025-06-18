@@ -4,7 +4,7 @@ namespace KaiCryptoTracker.Helpers;
 //format number to 4 decimals without rounding
 public static class HelperClass
 {
-    public static decimal FormatDigitToThreeDecimalHelper(decimal number) => Math.Truncate(number * 10000m) / 10000m;
+    public static decimal FormatDigitToFourDecimalHelper(decimal number) => Math.Truncate(number * 10000m) / 10000m;
 
 
     //helper method to help map input of type int  to enum 

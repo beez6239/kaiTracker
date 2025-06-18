@@ -55,6 +55,20 @@ namespace KaiCryptoTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Coins",
+                columns: table => new
+                {
+                    CoinGeckoId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BinanceSymbol = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coins", x => x.CoinGeckoId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -238,8 +252,7 @@ namespace KaiCryptoTracker.Migrations
                     Symbol = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Decimals = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(38,18)", nullable: false),
-                    Verified_Contract = table.Column<bool>(type: "bit", nullable: false)
+                    VerifiedContract = table.Column<decimal>(type: "decimal(38,18)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -371,6 +384,9 @@ namespace KaiCryptoTracker.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Coins");
 
             migrationBuilder.DropTable(
                 name: "TokenHolding");

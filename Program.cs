@@ -8,6 +8,7 @@ using KaiCryptoTracker.WalletService;
 using KaiCryptoTracker.PortfolioService;
 using KaiCryptoTracker.AllApiCalls;
 using KaiCryptoTracker.SeedData;
+using KaiCryptoTracker.Market;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IApiCalls, ApiCalls>();
+builder.Services.AddScoped<CoinMetaData>();
+builder.Services.AddScoped<MarketBase, MartketData>();
 
 
 
@@ -44,30 +47,30 @@ var app = builder.Build();
 
 //create db if it does not exist 
 
-// using (var scoped = app.Services.CreateScope())
-// {
-//     var dbcontext = scoped.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+using (var scoped = app.Services.CreateScope())
+{
+    var dbcontext = scoped.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-//     await dbcontext.Database.MigrateAsync();
+    await dbcontext.Database.MigrateAsync();
 
-// }
+}
 
-// using (var scope = app.Services.CreateScope())
-// {
-//     var tokens = scope.ServiceProvider.GetRequiredService<CoinMetaData>();
-//     await tokens.AddCoinSeedDatab();
+using (var scope = app.Services.CreateScope())
+{
+    var tokens = scope.ServiceProvider.GetRequiredService<CoinMetaData>();
+    await tokens.AddCoinSeedData();
 
-// }
+}
 
 
 if (app.Environment.IsDevelopment())
-    {
-        app.UseHttpsRedirection();
-    }
-    else
-    {
-        app.UseHsts();
-    }
+{
+    app.UseHttpsRedirection();
+}
+else
+{
+    app.UseHsts();
+}
 
 
 app.UseStaticFiles();

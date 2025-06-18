@@ -1,0 +1,71 @@
+@model List<MarketDataDto>
+
+<main class="w-full mx-auto">
+    <main class="p-6">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg text-white w-full max-w-6xl mx-auto mt-10">
+            <h3 class="text-2xl font-bold mb-4 text-center">Live Market Information</h3>
+            <div class="w-full">
+                <table class="table-fixed w-full border-collapse border border-gray-700">
+                    <thead>
+                        
+                        <tr class="bg-gray-700">
+                            <th class="border border-gray-600 p-2 break-words">Name</th>
+                            <th class="border border-gray-600 p-2 break-words">Symbol</th>
+                            <th class="border border-gray-600 p-2 break-words">Price (USD)</th>
+                            <th class="border border-gray-600 p-2 break-words">24h High</th>
+                            <th class="border border-gray-600 p-2 break-words">24h Low</th>
+                            <th class="border border-gray-600 p-2 break-words">24h Change</th>
+                            <th class="border border-gray-600 p-2 break-words">ATH</th>
+                            <th class="border border-gray-600 p-2 break-words">Volume</th>
+                            <th class="border border-gray-600 p-2 break-words">Market Cap</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach(var data in Model)
+                        {
+                            <tr class="text-center">
+                            <td class="border border-gray-600 p-2 items-center space-x-2 break-all">
+                                <div class="block md:flex">
+                                    <img
+                                        alt= @data.name
+                                        loading="lazy"
+                                        width="20"
+                                        height="20"
+                                        decoding="async"
+                                        data-nimg="1"
+                                        class="w-6 h-6"
+                            
+                                        src= @data.image
+                                        style="color: transparent;"
+                                    />
+                                    <span class="text-center text-sm ml-2 max-w[100px] inline-block">@data.name</span>
+                                </div>
+                            </td>
+                           
+                            <td class="border border-gray-600 p-2 break-words">@data.symbol</td>
+                         
+                            <td class="border border-gray-600 p-2 break-words ">$@data.current_price.ToString("N3")</td>
+                            <td class="border border-gray-600 p-2 break-words">$@data.high_24h.ToString("N3")</td>
+                            <td class="border border-gray-600 p-2 break-words">$@data.low_24h.ToString("N3")</td>
+                            @{
+                                if(data.price_change_24h < 0)
+                                {
+                                    <td class="border border-gray-600 p-2 break-words text-red-500">$@data.price_change_24h.ToString("N3")</td>
+                                }else 
+                                {
+                                    <td class="border border-gray-600 p-2 break-words text-green-500">+$@data.price_change_24h.ToString("N3")</td>
+                                }
+                            }                          
+                            <td class="border border-gray-600 p-2 break-words">$@data.ath.ToString("N4")</td>
+                            <td class="border border-gray-600 p-2 break-words">$@data.total_volume.ToString("N0")</td>
+                            <td class="border border-gray-600 p-2 break-words">$@data.market_cap.ToString("N0")</td>
+                        </tr>
+                        }
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</main>

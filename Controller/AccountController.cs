@@ -15,6 +15,7 @@ using KaiCryptoTracker.AlertModel;
 using KaiCryptoTracker.ApiModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using KaiCryptoTracker.Helpers;
+using KaiCryptoTracker.Market;
 
 namespace KaiCryptoTracker.Controllers;
 
@@ -27,7 +28,9 @@ public class AccountController : Controller
    private readonly ITokenService _tokenService;
    private readonly IWalletService _walletservice;
    private readonly IPortfolioService _portfolioservice;
-   
+
+
+
 
    public AccountController(ILogger<AccountController> logger, ITokenService tokenService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IWalletService walletservice, IPortfolioService portfolioservice)
    {
@@ -39,6 +42,7 @@ public class AccountController : Controller
       _portfolioservice = portfolioservice;
 
       _logger = logger;
+     
 
    }
 
@@ -140,28 +144,26 @@ public class AccountController : Controller
          } else if (alert.AlertType == alertypes[2]) //rsi alert
          {
 
-         }
-
-         
+         }  
    
       }
       return new JsonResult("");
    }
 
 
-   [Route("[action]")]
-    [HttpPost]
-   public async Task<IActionResult> TestEndpoint()
-   {
+   // [Route("[action]")]
+   //  [HttpPost]
+   // public async Task<IActionResult> TestEndpoint()
+   // {
 
-      //  var interval = HelperClass.InputIntervals(3);
+   //    //  var interval = HelperClass.InputIntervals(3);
 
-       await _tokenService.CoinMarketData();
+   //    //  await _tokenService.CoinMarketData();
+     
+   //    // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
 
-      // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
-
-      return Ok();
-   }
+   //    return Ok();
+   // }
 
 
 }

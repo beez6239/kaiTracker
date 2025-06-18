@@ -30,7 +30,7 @@ public class TokenService : ITokenService
         _logger = logger;
     }
 
-    public async Task<List<MarketDataDto>> CoinMarketData()  //Get all coins market data
+    public async Task<List<MarketDataDto>> CoinMarketDataAsync()  //Get all coins market data
     {
         string url = $"{_configuration.GetSection("CoinGecko")["url"]}markets?vs_currency=usd";
         string json = string.Empty;
@@ -40,7 +40,7 @@ public class TokenService : ITokenService
 
         }
         var marketdata = JsonConvert.DeserializeObject<List<MarketDataDto>>(json);
-        
+
         return marketdata; 
    
     }
@@ -198,7 +198,7 @@ public class TokenService : ITokenService
         {
             var closingprice = Convert.ToDecimal(price[4]);
 
-            closingprices.Add(HelperClass.FormatDigitToThreeDecimalHelper(closingprice));
+            closingprices.Add(HelperClass.FormatDigitToFourDecimalHelper(closingprice));
 
         }
 

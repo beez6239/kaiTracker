@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KaiCryptoTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250526102415_InitialCreate")]
+    [Migration("20250617220740_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -155,6 +155,25 @@ namespace KaiCryptoTracker.Migrations
                     b.ToTable("Chains");
                 });
 
+            modelBuilder.Entity("KaiCryptoTracker.Models.Coins", b =>
+                {
+                    b.Property<string>("CoinGeckoId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BinanceSymbol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Symbol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CoinGeckoId");
+
+                    b.ToTable("Coins");
+                });
+
             modelBuilder.Entity("KaiCryptoTracker.Models.Portfolio", b =>
                 {
                     b.Property<Guid>("PortfolioId")
@@ -222,9 +241,6 @@ namespace KaiCryptoTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(38, 18)");
-
                     b.Property<Guid>("ChainId")
                         .HasColumnType("uniqueidentifier");
 
@@ -239,8 +255,8 @@ namespace KaiCryptoTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Verified_Contract")
-                        .HasColumnType("bit");
+                    b.Property<decimal>("VerifiedContract")
+                        .HasColumnType("decimal(38, 18)");
 
                     b.HasKey("TokenMetadataId");
 
@@ -406,7 +422,7 @@ namespace KaiCryptoTracker.Migrations
             modelBuilder.Entity("KaiCryptoTracker.Models.TokenHolding", b =>
                 {
                     b.HasOne("KaiCryptoTracker.Models.TokenMetadata", "TokenMetadata")
-                        .WithMany("tokenHoldings")
+                        .WithMany("TokenHoldings")
                         .HasForeignKey("TokenMetadataId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -524,7 +540,7 @@ namespace KaiCryptoTracker.Migrations
 
             modelBuilder.Entity("KaiCryptoTracker.Models.TokenMetadata", b =>
                 {
-                    b.Navigation("tokenHoldings");
+                    b.Navigation("TokenHoldings");
                 });
 
             modelBuilder.Entity("KaiCryptoTracker.Models.Wallet", b =>

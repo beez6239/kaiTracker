@@ -16,7 +16,7 @@ public class CoinMetaData
         _logger = logger;
     }
 
-    public async Task AddCoinSeedDatab()
+    public async Task AddCoinSeedData()
     {
         try
         {

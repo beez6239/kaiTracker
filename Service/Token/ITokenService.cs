@@ -17,7 +17,7 @@ public interface ITokenService
 
     public Task<List<Coins>> SupportedCoinsAfterMergeAsync();
 
-    public Task<List<MarketDataDto>> CoinMarketData(); 
+    public Task<List<MarketDataDto>> CoinMarketDataAsync(); 
 
     //Coin methods Binance 
     public Task<Dictionary<string, string>> GetAllBinanceSupportedTokensAsync();
