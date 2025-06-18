@@ -78,25 +78,25 @@ public class AccountController : Controller
    [Route("[action]")]
    public async Task<IActionResult> Portfolio()
    {
-      // var user = await _userManager.GetUserAsync(User);
+      var user = await _userManager.GetUserAsync(User);
 
-      // if (user != null)
-      // {
-      //    var porfolioresult = await _dbcontext.Portfolios
-      //    .Include(p => p.Chains)
-      //    .Include(w => w.Wallets)
-      //    .FirstOrDefaultAsync(p => p.UserId == user.Id);
+      if (user != null)
+      {
+         var porfolioresult = await _dbcontext.Portfolios
+         .Include(p => p.Chains)
+         .Include(w => w.Wallets)
+         .FirstOrDefaultAsync(p => p.UserId == user.Id);
 
 
-      //    if (porfolioresult == null)
-      //    {
-      //       porfolioresult = await _portfolioservice.AddPortfolioAsync(user.Id, null);
-      //    }
+         if (porfolioresult == null)
+         {
+            porfolioresult = await _portfolioservice.AddPortfolioAsync(user.Id, null);
+         }
 
-      //    return View(porfolioresult);
-      // }
+         return View(porfolioresult);
+      }
 
-      // ViewBag.Title = "Portflio Overview";
+      ViewBag.Title = "Portflio Overview";
 
       return View();
 
@@ -125,6 +125,13 @@ public class AccountController : Controller
       return RedirectToAction("Dashboard", "Account");
    }
 
+  
+  [Route("[action]")]
+   public IActionResult Settings()
+   {
+      return View();
+   }
+
 
    [HttpPost]
    [Route("[action]")]
@@ -151,19 +158,19 @@ public class AccountController : Controller
    }
 
 
-   // [Route("[action]")]
-   //  [HttpPost]
-   // public async Task<IActionResult> TestEndpoint()
-   // {
+   [Route("[action]")]
+    [HttpPost]
+   public async Task<IActionResult> TestEndpoint(string walletaddress, string chain)
+   {
 
-   //    //  var interval = HelperClass.InputIntervals(3);
+      //  var interval = HelperClass.InputIntervals(3);
 
-   //    //  await _tokenService.CoinMarketData();
+      await _walletservice.GetWalletDetailsAsync( walletaddress, chain);
      
-   //    // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
+      // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
 
-   //    return Ok();
-   // }
+      return Ok();
+   }
 
 
 }

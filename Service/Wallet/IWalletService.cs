@@ -8,7 +8,7 @@ public interface IWalletService
     Task AddWalletAsync(Guid userId, string walletaddress, string chain, string Walletname);
     Task<bool> RemoveWalletAsync(Guid WalletId);
     Task<List<Wallet>> GetUserWalletsAsync(Guid userId);
-    Task<Wallet> GetWalletDetailsAsync(Guid userId, string walletAddress, string chain);
+    Task<WalletStatDto> GetWalletDetailsAsync(string walletAddress, string chain);
 
     Task<WalletPnlSummary> GetWalletPNLAsync(string walletaddress, string chain);
 

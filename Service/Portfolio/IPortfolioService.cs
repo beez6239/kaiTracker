@@ -6,6 +6,7 @@ public interface IPortfolioService
     Task<Portfolio> GetPortfolioOverviewAsync(Guid userId);
 
     Task<Portfolio> AddPortfolioAsync(Guid userId, string? portfolioname);
+    Task<Portfolio> UpdatePortfolio(Guid userId, Guid PortfolioId, Guid WalletId);
 
     Task DeletePortfolioAsync(Guid userId, Guid PortfolioId);
 

@@ -3,17 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using KaiCryptoTracker.Models;
 using KaiCryptoTracker.PortfolioService;
 using KaiCryptoTracker.AllApiCalls;
+using KaiCryptoTracker.WalletService;
 
 public class PortfolioService : IPortfolioService
 {
     private readonly ApplicationDbContext _dbcontext;
-    private readonly IApiCalls _api; 
+    private readonly IApiCalls _api;
+    private readonly IWalletService _walletservice; 
     private readonly ILogger<PortfolioService> _logger;
-    public PortfolioService(ApplicationDbContext dbcontext, ILogger<PortfolioService> logger,  IApiCalls api)
+    public PortfolioService(ApplicationDbContext dbcontext, ILogger<PortfolioService> logger, IApiCalls api, IWalletService walletservice)
     {
         _dbcontext = dbcontext;
         _logger = logger;
         _api = api;
+        _walletservice = walletservice; 
+       
     }
     public async Task<Portfolio> AddPortfolioAsync(Guid userId, string? portfolioname)
     {
@@ -52,6 +56,13 @@ public class PortfolioService : IPortfolioService
         throw new NotImplementedException();
     }
 
+    public Task<Portfolio> UpdatePortfolio(Guid userId, Guid PortfolioId, Guid WalletId)
+    {
+
+        // _walletservice.GetWalletActiveChains();
+        throw new NotImplementedException();
+    }
+
     // public async Task<decimal> GetTotalValueAsync(Guid userId)
     // {
     //      var user = await _dbcontext.Users
@@ -69,7 +80,7 @@ public class PortfolioService : IPortfolioService
     // {
     //     foreach (var holding in wallet.tokenHoldings)
     //     {
-            
+
     //         var priceUsd = await _api.GetPriceCoinGecko(holding.TokenMetadata.Address, holding.TokenMetadata.Chain.ChainName);
     //         totalValue += holding.Balance * priceUsd;
     //     }

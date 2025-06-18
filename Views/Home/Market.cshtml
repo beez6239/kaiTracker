@@ -1,4 +1,7 @@
 @model List<MarketDataDto>
+ @{
+    double totalpagestodisplay = Math.Ceiling((double)ViewBag.TotalCoinsToDisplay / ViewBag.pagesize);
+ }   
 
 <main class="w-full mx-auto">
     <main class="p-6">
@@ -66,6 +69,21 @@
                     </tbody>
                 </table>
             </div>
+            <div class="flex justify-center mt-6 space-x-2">
+                @if(ViewBag.currentPage > 1)
+                {
+                    <a href="@Url.Action("Market", new { page = ViewBag.currentPage - 1 })"
+                       class="px-3 py-1 bg-gray-700 rounded text-white hover:bg-blue-600">Previous</a>
+                }
+                <span class="px-3 py-1 bg-gray-700 rounded">@ViewBag.currentPage... @totalpagestodisplay </span>
+                @if(ViewBag.CurrentPage < totalpagestodisplay)
+                {
+                  <a href="@Url.Action("Market", new { page = ViewBag.currentPage + 1 })"
+                       class="px-3 py-1 bg-gray-700 rounded text-white hover:bg-blue-600">Next</a>
+                }
+
+            </div>
+        
         </div>
     </main>
 </main>

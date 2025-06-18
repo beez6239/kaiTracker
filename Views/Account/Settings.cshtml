@@ -1,0 +1,109 @@
+<section class="mt-10 md:mt-15 ps-2 md:ps-20 pe-2 md:pe-4 w-lvw">
+    <div class="grid grid-cols-10 gap-4">
+        <div class="col-span-10 p-4 rounded-lg shadow">
+            <h6 class="text-2xl font-bold">Settings</h6>
+        </div>
+        <div class="col-span-10 grid grid-cols-1 gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <div>
+                <h6 class="text-xl font-bold">Security</h6>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b border-gray-200 dark:border-gray-700 pb-2">
+                <div class="flex justify-start items-center col-span-2">
+                    <div class="flex items-center">
+                        <span class="w-[32px] bg-primary-200 hover:bg-primary-300 flex justify-center items-center rounded-lg ring ring-primary-300 cursor-pointer">
+                            <i class="fa-solid fa-key text-primary text-2xl"></i>
+                        </span>
+                        <div class="flex flex-col px-2">
+                            <span class="font-bold">Security question</span>
+                            <span class="text-gray-400 text-sm">Protect your account with a security question.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center">
+                    <div class="flex items-center">
+                        <i class="fa-regular fa-circle-xmark text-red-700 text-2xl"></i>
+                        <span class="px-2">Unset</span>
+                    </div>
+                </div>
+                <div class="flex justify-start md:justify-end items-center">
+                    <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" type="button" class="rounded-lg bg-blue-500 hover:bg-blue-350 text-white py-2 text-sm uppercase px-3 mt-2 lg:mt-0">
+                        Enable
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b border-gray-200 dark:border-gray-700 pb-2">
+                <div class="flex justify-start items-center col-span-2">
+                    <div class="flex items-center">
+                        <span class="w-[32px] bg-primary-200 hover:bg-primary-300 flex justify-center items-center rounded-lg ring ring-primary-300 cursor-pointer"><i class="fa-solid fa-network-wired text-primary text-2xl"></i></span>
+
+                        <div class="flex flex-col px-2">
+                            <span class="font-bold">2FA (Recommended)</span>
+                            <span class="text-gray-400 text-sm">Protect your account and transactions.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center">
+                    <div class="flex items-center">
+                        <i class="fa-regular fa-circle-xmark text-red-700 text-2xl"></i>
+                        <span class="px-2">Unset</span>
+                    </div>
+                </div>
+                <div class="flex justify-start md:justify-end items-center">
+                    <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" type="button" class="rounded-lg bg-blue-500 hover:bg-blue-350 text-white py-2 text-sm uppercase px-3 mt-2 lg:mt-0">
+                        Enable
+                    </button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="flex justify-start items-center col-span-2">
+                    <div class="flex items-center">
+                        <span class="w-[32px] bg-primary-200 hover:bg-primary-300 flex justify-center items-center rounded-lg ring ring-primary-300 cursor-pointer">
+                            <i class="fa-solid fa-envelope text-primary text-2xl"></i>
+                        </span>
+                        <div class="flex flex-col px-2">
+                            <span class="font-bold">Email Address Verification </span>
+                            <span class="text-gray-400 text-sm">Protect your account and transactions.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center">
+                    <a href="email:Joh*****gmail.com" class="flex items-center hover:text-blue-500 group">
+                        <i class="fa-solid fa-check text-green-500 group-hover:text-blue-500"></i>
+                        <span class="px-2">Joh*****gmail.com</span>
+                    </a>
+                </div>
+
+                <div class="flex justify-start md:justify-end items-center">
+                    <button data-modal-target="change-settings" data-modal-toggle="change-settings" type="button" class="rounded-lg bg-red-500 hover:bg-blue-350 text-white py-2 text-sm uppercase px-3 lg:mt-0 hover:bg-blue-350">change</button>
+
+                    <button data-modal-target="remove-settings" data-modal-toggle="remove-settings" type="button" class="rounded-lg bg-blue-500 hover:bg-blue-350 text-white py-2 text-sm uppercase px-3 ms-2 lg:mt-0 hover:bg-blue-350">Verify</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-10 grid grid-cols-1 gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <div>
+                <h6 class="text-xl font-bold">Advanced Security</h6>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 border-b border-gray-200 dark:border-gray-700 pb-2">
+                <div class="flex justify-start items-center col-span-2">
+                    <div class="flex items-center">
+                        <span class="w-[32px] bg-primary-200 hover:bg-primary-300 flex justify-center items-center rounded-lg ring ring-primary-300 cursor-pointer">
+                            <i class="fa-solid fa-lock text-2xl text-primary"></i>
+                        </span>
+                        <div class="flex flex-col px-2">
+                            <span class="font-bold">Login Password</span>
+                            <span class="text-gray-400 text-sm">Login password is used to log in to your account.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-start items-center"></div>
+                <div class="flex justify-start md:justify-end items-center">
+                    <button data-modal-target="change-settings" data-modal-toggle="change-settings" type="button" class="rounded-lg bg-red-500 hover:bg-blue-500 text-white py-2 text-sm uppercase px-3 lg:mt-0 hover:bg-blue-350">change</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>

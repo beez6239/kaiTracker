@@ -48,9 +48,13 @@ public class WalletService : IWalletService
         return await _dbcontext.Wallets.Where(w => w.UserId == userId).ToListAsync();       
     }
 
-    public Task<Wallet> GetWalletDetailsAsync(Guid userId, string walletAddress, string chain)
+    public async Task<WalletStatDto?> GetWalletDetailsAsync(string walletAddress, string chain)
     {
-        throw new NotImplementedException();
+        string? url = $"{_configuration.GetSection("Moralis")["walleturl"]}{walletAddress}/stats?chain={chain}";
+        var json = await _apicalls.MoralisAsync(url);
+        
+        return JsonConvert.DeserializeObject<WalletStatDto>(json);
+
     }
 
     public async Task<bool> RemoveWalletAsync(Guid WalletId)

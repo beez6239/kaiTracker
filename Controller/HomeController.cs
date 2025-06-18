@@ -82,11 +82,21 @@ public class HomeController : Controller
   
 
   [Route("[action]")]
-  public async Task<IActionResult> Market()
+  public async Task<IActionResult> Market(int page = 1)
   {
+    int pagesize = 15; 
     var market =  await _market.livemarketdata();
+
+    //get pagesize to display on each page
+    var pagedcoins = market.Skip((page - 1) * pagesize).Take(pagesize).ToList();
+
+    //save details in viewbag
+    ViewBag.CurrentPage = page;
+    ViewBag.PageSize = pagesize;
+    ViewBag.TotalCoinsToDisplay = market.Count();
+
     
-    return View(market);
+    return View(pagedcoins);
   }
 
 
