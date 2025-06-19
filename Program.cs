@@ -23,6 +23,7 @@ builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IApiCalls, ApiCalls>();
 builder.Services.AddScoped<CoinMetaData>();
 builder.Services.AddScoped<MarketBase, MartketData>();
+builder.Services.AddMemoryCache();
 
 
 

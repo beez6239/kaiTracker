@@ -1,3 +1,5 @@
+using KaiCryptoTracker.Models;
+
 namespace KaiCryptoTracker.ApiModels;
 
 public class Activechains

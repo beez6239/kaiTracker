@@ -21,11 +21,11 @@ public class TokenResult
     public string Possible_Spam { get; set; } = string.Empty;
     public bool Verified_Contract { get; set; } 
     public string Balance_Formatted { get; set; } = string.Empty;
-    public double Usd_Price { get; set; } 
-    public double Usd_Price_24hr_Percent_Change { get; set; }
-    public double Usd_Price_24hr_Usd_Change { get; set; }
-    public double Usd_Value { get; set; }
-    public double Usd_Value_24hr_Usd_Change { get; set; }
+    public decimal Usd_Price { get; set; } 
+    public decimal Usd_Price_24hr_Percent_Change { get; set; }
+    public decimal Usd_Price_24hr_Usd_Change { get; set; }
+    public decimal Usd_Value { get; set; }
+    public decimal Usd_Value_24hr_Usd_Change { get; set; }
     public bool Native_Token { get; set; }
-    public double Portfolio_Percentage { get; set; }
+    public decimal Portfolio_Percentage { get; set; }
 }
