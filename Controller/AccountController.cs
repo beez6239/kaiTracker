@@ -16,6 +16,7 @@ using KaiCryptoTracker.ApiModels;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using KaiCryptoTracker.Helpers;
 using KaiCryptoTracker.Market;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace KaiCryptoTracker.Controllers;
 
@@ -29,10 +30,10 @@ public class AccountController : Controller
    private readonly IWalletService _walletservice;
    private readonly IPortfolioService _portfolioservice;
 
+    private readonly MarketBase _market;
 
 
-
-   public AccountController(ILogger<AccountController> logger, ITokenService tokenService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IWalletService walletservice, IPortfolioService portfolioservice)
+   public AccountController(ILogger<AccountController> logger, ITokenService tokenService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ApplicationDbContext dbcontext, IWalletService walletservice, IPortfolioService portfolioservice, MarketBase market)
    {
       _tokenService = tokenService;
       _signInManager = signInManager;
@@ -40,7 +41,7 @@ public class AccountController : Controller
       _dbcontext = dbcontext;
       _walletservice = walletservice;
       _portfolioservice = portfolioservice;
-
+      _market = market; 
       _logger = logger;
      
 
@@ -135,24 +136,38 @@ public class AccountController : Controller
 
    [HttpPost]
    [Route("[action]")]
-   public IActionResult AlertAction(AlertAction alert)
+   public async Task<IActionResult> Alert(AlertAction alert)
    {
-
-
       if (ModelState.IsValid)
       {
-         var alertypes = AlertTypes.AlertTypeValues();
+         var alertypes = HelperClass.AlertTypeValues();
          if (alert.AlertType == alertypes[0]) //price alert 
          {
 
-         } else if (alert.AlertType == alertypes[1]) //moving average alert
+         }
+         else if (alert.AlertType == alertypes[1]) //moving average alert
+         {
+            var Symbol = HelperClass.FormatCoinSymbol(alert.Coin);
+            if (alert.MovingAverage != null)
+            {
+
+               var result = await _market.CompareMovingAverage(alert.MovingAverage[0], alert.MovingAverage[1],Symbol , alert.Interval);
+               if (result)
+               { 
+                  
+               }
+            }
+             
+         }
+         else if (alert.AlertType == alertypes[2]) //rsi alert
          {
 
-         } else if (alert.AlertType == alertypes[2]) //rsi alert
-         {
+         }
 
-         }  
-   
+      }
+      else
+      {
+         ModelState.AddModelError("customererror", "Problem with Alert Values");
       }
       return new JsonResult("");
    }
@@ -160,12 +175,12 @@ public class AccountController : Controller
 
    [Route("[action]")]
     [HttpPost]
-   public async Task<IActionResult> TestEndpoint(string walletaddress, string chain)
+   public async Task<IActionResult> TestEndpoint(string symbol, int interval , int count)
    {
 
       //  var interval = HelperClass.InputIntervals(3);
 
-      await _walletservice.GetWalletDetailsAsync( walletaddress, chain);
+      await _market.GetMovingAverage(symbol, interval, count);
      
       // Coins[]? data = JsonConvert.DeserializeObject<Coins[]>(result);
 

@@ -17,8 +17,17 @@ public static class HelperClass
             15 => CandleInterval.FifteenMinutes,
             30 => CandleInterval.ThirtyMinutes,
 
-            _ => throw new ArgumentException("{0} is invalid/not supported yet", nameof(number))
+            _ => throw new ArgumentException($"{0} is invalid/not supported yet", nameof(number))
         };
+    }
+    public static string[] AlertTypeValues()
+    {
+        return ["price", "ma", "Rsi"];
+    }
+
+    public static string FormatCoinSymbol(string coin)
+    {
+        return $"{coin}USDT"; 
     }
 
 }

@@ -192,6 +192,7 @@ public class TokenService : ITokenService
         string kline = "klines";
         var url = $"{_configuration.GetSection("Binance")["url"]}{kline}?symbol={symbol}&interval={interval.ConvertBinanceString()}";
         var json = await _apicalls.BinanceAsync(url);
+        
         var prices = JArray.Parse(json);
         List<decimal> closingprices = [];
         foreach (var price in prices)

@@ -3,23 +3,29 @@ namespace KaiCryptoTracker.AlertModel;
 
 public class AlertAction
 {
-    [Required(ErrorMessage = "Please select a Token ")]
+    [Required(ErrorMessage = "Please select a token.")]
     public string Coin { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Alert type not specified ")]
+    [Required(ErrorMessage = "Alert type is not specified.")]
     public string AlertType { get; set; } = string.Empty;
+
+   
+    [Range(1, 100, ErrorMessage = "RSI value must be between 1 and 100.")]
     public int? RSIValue { get; set; }
-    public int? Price { get; set; }
-    public int[]? MovingAverage { get; set; } = Array.Empty<int>();
-    public Dictionary<string, int> condition { get; set; } = new();
 
+    
+    [Range(0.00001, double.MaxValue, ErrorMessage = "Price must be a positive number.")]
+    public decimal? AlertPrice { get; set; }
 
-}
+    
+    [MinLength(2, ErrorMessage = "Two moving average values are required.")]
+    public int[]? MovingAverage { get; set; }
+    
+    public int Interval { get; set; }
 
-public static class AlertTypes
-{
-    public static string[] AlertTypeValues()
-    {
-        return ["Pricealert", "Movingaveragealert", "Rsialert"]; 
-    }
+    public string? Condition { get; set; }
+
+    [Required(ErrorMessage = "Notification method is required.")]
+    public string NotificationMethod { get; set; } = string.Empty;
+
 }

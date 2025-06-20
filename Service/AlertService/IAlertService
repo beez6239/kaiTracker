@@ -1,0 +1,6 @@
+namespace KaiCryptoTracker.AlertService;
+
+public interface IAlertService
+{ 
+    
+}

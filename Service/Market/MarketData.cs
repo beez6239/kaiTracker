@@ -20,8 +20,8 @@ public class MartketData : MarketBase
         
         var task = new List<Task<decimal>>
         {
-            GetMovingAverage(symbol, interval, firstcandlecount),
-            GetMovingAverage(symbol, interval, secondcandlecount)
+             GetMovingAverage(symbol, interval, firstcandlecount),
+             GetMovingAverage(symbol, interval, secondcandlecount)
         };
 
         try
@@ -32,7 +32,7 @@ public class MartketData : MarketBase
         }
         catch (Exception ex)
         {
-            _logger.LogError("{0} getting moving average attempts failed ", nameof(task));
+            _logger.LogError(ex, "{0} getting moving average attempts failed ", nameof(task));
         }
        
 
@@ -50,6 +50,7 @@ public class MartketData : MarketBase
     public async override Task<decimal> GetMovingAverage(string symbol, int interval, int candlecount)
     {
         var inputinterval = HelperClass.InputIntervals(interval);
+        
         var prices = await _tokenservice.GetCoinCandleDataAsync(symbol, inputinterval);
 
         var lastcandlecountprices = prices.TakeLast(candlecount);
